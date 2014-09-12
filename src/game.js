@@ -11,11 +11,13 @@
 
 var gameOptions = {
 	renderer: Kiwi.RENDERER_CANVAS, 
+	deviceTarget: Kiwi.TARGET_COCOON,
+	scaleType: Kiwi.Stage.SCALE_FIT,
 	width: 768,
 	height: 1024
 }
 
-var game = new Kiwi.Game('content', 'PixelJam', null, gameOptions);
+var game = new Kiwi.Game(null, 'PixelJam', null, gameOptions);
 
 //Add all the States we are going to use.
 game.states.addState(PixelJam.Loading);

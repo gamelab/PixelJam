@@ -2,11 +2,14 @@ var PixelJam = PixelJam || {};
 
 PixelJam.Input = PixelJam.Input || {};
 
-PixelJam.Input.Main = function(state) {
+PixelJam.Input.Main = function(state, hud, playerOne, playerTwo) {
 
 	this.state = state;
-
 	this.game = this.state.game;
+
+	this.hud = hud;
+	this.playerOne = playerOne;
+	this.playerTwo = playerTwo;
 
 	this.activePointers = [];
 
@@ -39,9 +42,15 @@ PixelJam.Input.Main.prototype = {
 
 	},
 
+	hudInput: function(pointer) {
+
+		//
+
+	},
+
 	addPointer: function(pointer) {
-		var np = new PixelJam.Input.Pointer(pointer);
-		this.activePointers.push( pointer );
+		var np = new PixelJam.Input.Pointer( pointer );
+		this.activePointers.push( np );
 		return np;
 	},
 

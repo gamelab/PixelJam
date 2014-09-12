@@ -11,6 +11,11 @@ PixelJam.Play = new Kiwi.State('Play');
 
 PixelJam.Play.init = function() {
 
+	this.mapSize = {
+		x: 2048,
+		y: 2048
+	}
+
 	this.hudCam = this.game.cameras.defaultCamera;
 
 	this.player1Cam = this.game.cameras.create('player1Cam', 0, 0, this.game.stage.width, this.game.stage.height * 0.5, false);
@@ -38,10 +43,14 @@ PixelJam.Play.create = function () {
 	this.player1 = new PixelJam.Player(this, this.player1Cam, 1);
 	this.player2 = new PixelJam.Player(this, this.player2Cam, 2);
 
+	this.hud = new PixelJam.HUD(this, this.hudCam, this.player1, this.player2);
+
+	this.input = new PixelJam.Input.Main(this, this.hud, this.player1, this.player2);
+
+
 	//Depth Sorting
 	//Character group
 	this.characterGroup = new Kiwi.Group(this, 'CharacterGroup');
-
 
 
 
@@ -51,8 +60,20 @@ PixelJam.Play.create = function () {
 PixelJam.Play.add = function() {
 
 	this.map.add(this);
+	this.addChild(this.characterGroup);
 	this.player1.add(this.characterGroup);
 	this.player2.add(this.characterGroup);
+
+	this.hud.add(this);
+
+}
+
+PixelJam.Play.update = function() {
+
+	Kiwi.State.prototype.update.call(this);
+
+	this.player1.update();
+	this.player2.update();
 
 }
 

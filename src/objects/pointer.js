@@ -21,7 +21,7 @@ PixelJam.Input.Pointer.prototype = {
 		
 		this.pointer = null;
 		
-		this.callback.call(this.context);
+		if(this.callback) this.callback.call(this.context);
 
 		this.callback = null;
 		
