@@ -9,48 +9,60 @@ PixelJam.Play = new Kiwi.State('Play');
 * 
 */
 
+PixelJam.Play.init = function() {
+
+	this.hudCam = this.game.cameras.defaultCamera;
+
+	this.player1Cam = this.game.cameras.create('player1Cam', 0, 0, this.game.stage.width, this.game.stage.height * 0.5, false);
+	this.player2Cam = this.game.cameras.create('player2Cam', 0, 0, this.game.stage.width, this.game.stage.height * 0.5, false);
+
+	this.player1Cam.ry = this.game.stage.height * 0.5; //Move it have way down
+
+}
 
 /**
 * This create method is executed when a Kiwi state has finished loading any resources that were required to load.
 */
 PixelJam.Play.create = function () {
 
-	/*
-	* Replace with your own game creation code here...
-	*/
-  	this.name = new Kiwi.GameObjects.StaticImage(this, this.textures.kiwiName, 10, 10);
-  		
+	//Add Custom Cameras
+	this.game.cameras.add(this.player1Cam);
+	this.game.cameras.add(this.player2Cam);
 
-  	this.heart = new Kiwi.GameObjects.Sprite(this, this.textures.icons, 10, 10);
-  	this.heart.cellIndex = 8;
-  	this.heart.y = this.game.stage.height - this.heart.height - 10;
+	//Move the HUD camera into its 'own' space
+	this.hudCam.transform.x = this.game.stage.width;
+	this.hudCam.transform.y = this.game.stage.height;
 
+	this.map = new PixelJam.Map(this);
 
-  	this.sheild = new Kiwi.GameObjects.Sprite(this, this.textures.icons, 200, 200);
-  	this.sheild.cellIndex = 9;
-  	this.sheild.y = this.game.stage.height * 0.5 - this.sheild.height * 0.5;
-  	this.sheild.x = this.game.stage.width * 0.5 - this.sheild.width * 0.5;
+	this.player1 = new PixelJam.Player(this, this.player1Cam, 1);
+	this.player2 = new PixelJam.Player(this, this.player2Cam, 2);
 
-
-  	this.crown = new Kiwi.GameObjects.Sprite(this, this.textures.icons, 10, 10);
-  	this.crown.cellIndex = 10; 
-  	this.crown.x = this.game.stage.width - this.crown.width - 10;
-  	this.crown.y = this.game.stage.height - this.crown.height - 10;
+	//Depth Sorting
+	//Character group
+	this.characterGroup = new Kiwi.Group(this, 'CharacterGroup');
 
 
-  	this.bomb = new Kiwi.GameObjects.Sprite(this, this.textures.icons, 0, 10);
-  	this.bomb.x = this.game.stage.width - this.bomb.width  -10;
 
 
-  	//Add the GameObjects to the stage
-  	this.addChild(this.heart);
-  	this.addChild(this.crown);
-  	this.addChild(this.sheild);
-  	this.addChild(this.bomb);
-	  this.addChild(this.name);
-  
+ 	this.add(); 
 }
 
+PixelJam.Play.add = function() {
+
+	this.map.add(this);
+	this.player1.add(this.characterGroup);
+	this.player2.add(this.characterGroup);
+
+}
+
+PixelJam.Play.shutDown = function() {
+
+	//Remove the new cameras from rendering
+	this.game.cameras.remove(this.player1Cam);
+	this.game.cameras.remove(this.player2Cam);
+
+}
 
 
 

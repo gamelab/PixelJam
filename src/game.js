@@ -10,9 +10,9 @@
 //Initialise the Kiwi Game. 
 
 var gameOptions = {
-	renderer: Kiwi.RENDERER_WEBGL, 
-	width: 800,
-	height: 600
+	renderer: Kiwi.RENDERER_CANVAS, 
+	width: 768,
+	height: 1024
 }
 
 var game = new Kiwi.Game('content', 'PixelJam', null, gameOptions);

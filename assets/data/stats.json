@@ -1,0 +1,38 @@
+ {
+ 	"fire": {
+	 	"health": 0,
+		"mana": 0,
+		"defense": 0,
+		"type": 0,
+		"autoAttackStrength": 0,
+		"autoAttackSpeed": 0,
+		"walkSpeed": 0
+	},
+ 	"water": {
+	 	"health": 0,
+		"mana": 0,
+		"defense": 0,
+		"type": 0,
+		"autoAttackStrength": 0,
+		"autoAttackSpeed": 0,
+		"walkSpeed": 0
+	},
+ 	"earth": {
+	 	"health": 0,
+		"mana": 0,
+		"defense": 0,
+		"type": 0,
+		"autoAttackStrength": 0,
+		"autoAttackSpeed": 0,
+		"walkSpeed": 0
+	},
+ 	"air": {
+	 	"health": 0,
+		"mana": 0,
+		"defense": 0,
+		"type": 0,
+		"autoAttackStrength": 0,
+		"autoAttackSpeed": 0,
+		"walkSpeed": 0
+	}
+}

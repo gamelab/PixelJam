@@ -33,7 +33,17 @@ PixelJam.Loading.preload = function () {
     /**
     * Replace with your own in-assets to load.
     **/
-    this.addImage('kiwiName', 'assets/img/kiwijs-name.png');
-    this.addSpriteSheet('icons', 'assets/img/kiwijs-icons.png', 100, 90);
+    this.addImage('map', 'assets/img/map.png');
+
+    //HUD
+    this.addSpriteSheet('portraits', 'assets/img/portraits.png', 128, 128);
+
+
+    //Characters In game
+    this.addJSON('stats', 'assets/data/stats.json');
+    this.addImage('fireCharacter', 'assets/img/fireCharacter.png');
+    this.addImage('waterCharacter', 'assets/img/waterCharacter.png');
+    this.addImage('airCharacter', 'assets/img/airCharacter.png');
+    this.addImage('earthCharacter', 'assets/img/earthCharacter.png');
 
 };
