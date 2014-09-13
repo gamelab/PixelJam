@@ -20,7 +20,7 @@ PixelJam.Player = function(state, camera, player) {
 		camera.transform.rotation = Math.PI;
 
 	}
-	this.camera = new PixelJam.Camera(camera, camMod);
+	this.camera = new PixelJam.Camera(this.state.game, camera, camMod);
 
 
 	this.fireCharacter = new PixelJam.Character(this.state, 'fire', x + 100, y + 100);
@@ -40,14 +40,52 @@ PixelJam.Player.prototype = {
 		parent.addChild(this.earthCharacter);
 	},
 
+	moveToPoint: function( character, pointer ) {
 
-	moveCamera: function(x, y) {
+		character.moveToPoint( this.camera, pointer );
 
+		//Spawn UI element!
+
+	},
+
+	released: function( id ) {
+		//Does pointer
+		this.fireCharacter.releasePoint( id );
+		this.waterCharacter.releasePoint( id );
+		this.airCharacter.releasePoint( id );
+		this.earthCharacter.releasePoint( id );
+
+	},
+
+	moveCamera: function( character ) {
+		//
+		console.log('Moving to Character');
+
+		this.camera.moveTo( character.currentPoint );
 
 	},
 
 	update: function() {
 		this.camera.update();
+
+		if(this.fireCharacter.pointer) {
+			//Attack?
+
+		}
+
+		if(this.waterCharacter.pointer) {
+			//Attack?
+		
+		}
+		if(this.airCharacter.pointer) {
+			//Attack?
+		
+		}
+		if(this.earthCharacter.pointer) {
+			//Attack?
+
+		}
+
 
 	}
 

@@ -12,18 +12,21 @@ PixelJam.HUD = function(state, hudCam, playerOne, playerTwo) {
 
 	//Add the portrait
 
+	var callback = this.playerOne.moveCamera.bind(this.playerOne);
 	this.playerOneHud = {
-		'fire': new PixelJam.Portrait(this.state, 'fire', 128, 0, this.playerOne.fireCharacter),
-		'water': new PixelJam.Portrait(this.state, 'water', 384, 0, this.playerOne.waterCharacter),
-		'earth': new PixelJam.Portrait(this.state, 'earth', 0, 0, this.playerOne.earthCharacter),
-		'air': new PixelJam.Portrait(this.state, 'air', 256, 0, this.playerOne.airCharacter)
+		'fire': new PixelJam.Portrait(this.state, 'fire', 128, 0, this.playerOne.fireCharacter, callback ),
+		'water': new PixelJam.Portrait(this.state, 'water', 384, 0, this.playerOne.waterCharacter, callback ),
+		'earth': new PixelJam.Portrait(this.state, 'earth', 0, 0, this.playerOne.earthCharacter, callback ),
+		'air': new PixelJam.Portrait(this.state, 'air', 256, 0, this.playerOne.airCharacter, callback )
 	};
 
+
+	callback = this.playerTwo.moveCamera.bind(this.playerTwo);
 	this.playerTwoHud = {
-		'fire': new PixelJam.Portrait(this.state, 'fire', 256, 0, this.playerTwo.fireCharacter),
-		'water': new PixelJam.Portrait(this.state, 'water', 0, 0, this.playerTwo.waterCharacter),
-		'earth': new PixelJam.Portrait(this.state, 'earth', 384, 0, this.playerTwo.earthCharacter),
-		'air': new PixelJam.Portrait(this.state, 'air', 128, 0, this.playerTwo.airCharacter)
+		'fire': new PixelJam.Portrait(this.state, 'fire', 256, 0, this.playerTwo.fireCharacter, callback),
+		'water': new PixelJam.Portrait(this.state, 'water', 0, 0, this.playerTwo.waterCharacter, callback),
+		'earth': new PixelJam.Portrait(this.state, 'earth', 384, 0, this.playerTwo.earthCharacter, callback),
+		'air': new PixelJam.Portrait(this.state, 'air', 128, 0, this.playerTwo.airCharacter, callback)
 	};
 
 
@@ -36,7 +39,7 @@ PixelJam.HUD = function(state, hudCam, playerOne, playerTwo) {
 	this.playerTwoGroup = new Kiwi.Group(this.state);
 	this.playerTwoGroup.x = -this.hudCam.transform.x + (this.hudCam.width - this.playerTwoHud.fire.box.bounds.width * 4);
 	this.playerTwoGroup.y = -this.hudCam.transform.y;
-	
+
 	this.playerTwoHud.fire.transform.scale = -1;
 	this.playerTwoHud.water.transform.scale = -1;
 	this.playerTwoHud.earth.transform.scale = -1;

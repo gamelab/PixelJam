@@ -1,6 +1,6 @@
 var PixelJam = PixelJam || {};
 
-PixelJam.Portrait = function(state, type, x, y, character) {
+PixelJam.Portrait = function(state, type, x, y, character, callback) {
 
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures.portraits, x, y);
 
@@ -19,6 +19,13 @@ PixelJam.Portrait = function(state, type, x, y, character) {
 			break;
 	}
 
+	this.character = character;
+	this.callback = callback;
+
 }
 
 Kiwi.extend( PixelJam.Portrait, Kiwi.GameObjects.Sprite);
+
+PixelJam.Portrait.prototype.executeCallback = function() {
+	this.callback( this.character );
+}

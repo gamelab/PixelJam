@@ -40,9 +40,14 @@ PixelJam.Character = function(state, type, x, y) {
 
 	this.alive = true;
 
-	this.movementPoint = new Kiwi.Geom.Point(x, y);
+	this.currentPoint = new Kiwi.Geom.Point(x, y);
 
 	this.bounds = null;
+
+	this.destinationPoint = new Kiwi.Geom.Point(x, y);
+
+	this.camera = null;
+	this.pointer = null;
 
 	this.update();
 }
@@ -50,8 +55,21 @@ PixelJam.Character = function(state, type, x, y) {
 Kiwi.extend(PixelJam.Character, Kiwi.GameObjects.Sprite);
 
 
-PixelJam.Character.prototype.moveTo = function(x,y) {
-	this.movementPoint.setTo(x, y);
+PixelJam.Character.prototype.moveToPoint = function(camera, pointer) {
+	this.camera = camera;
+	this.pointer = pointer;
+}
+
+PixelJam.Character.prototype.releasePoint = function(id) {
+
+	if(this.pointer !== null && this.pointer.pointer.id == id) {
+		this.camera = null;
+		this.pointer = null;
+	}
+}
+
+PixelJam.Character.prototype.attackCharacter = function(character) {
+	this.character = character;
 }
 
 
@@ -60,9 +78,37 @@ PixelJam.Character.prototype.update = function(x,y) {
 
 	this.bounds = this.box.bounds;
 
-	//Check distance and stuff
-	this.x = Kiwi.Utils.GameMath.clamp(this.movementPoint.x - this.bounds.width * 0.5, PixelJam.Play.mapSize.x - this.bounds.width, 0);
-	this.y = Kiwi.Utils.GameMath.clamp(this.movementPoint.y, PixelJam.Play.mapSize.y - this.bounds.height, 0 );
+	//Constantly move the character to the destinationPoint
+	 if(!this.character) {
+		this.destinationPoint = this.character.currentPoint;
 
+	} else if(this.camera !== null && this.pointer !== null) {
+		this.destinationPoint = this.camera.camera.transformPoint( this.pointer.pointer.point );
+		this.destinationPoint.y -= this.camera.camera.ry + this.bounds.height;
+		this.destinationPoint.x -= this.camera.camera.rx;
+
+	} 
+
+	var x = this.currentPoint.x - this.destinationPoint.x;
+	var y = this.currentPoint.y - this.destinationPoint.y;
+	
+	if(x != 0 && y != 0) {
+
+		var hypo = Math.sqrt(x * x + y * y);
+		var angle = this.currentPoint.angleTo( this.destinationPoint );
+
+		hypo = Math.min(hypo, this.stats.walkSpeed);
+		x = Math.cos(angle - Math.PI / 2) * hypo; 
+		y = Math.sin(angle + Math.PI / 2) * hypo;
+
+		this.currentPoint.x += x;
+		this.currentPoint.y += y;
+	}
+
+
+
+	//Check distance and stuff
+	this.x = Kiwi.Utils.GameMath.clamp(this.currentPoint.x - this.bounds.width * 0.5, PixelJam.Play.mapSize.x - this.bounds.width, 0);
+	this.y = Kiwi.Utils.GameMath.clamp(this.currentPoint.y, PixelJam.Play.mapSize.y - this.bounds.height, 0 );
 
 }

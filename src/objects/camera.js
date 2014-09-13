@@ -1,7 +1,8 @@
 var PixelJam = PixelJam || {};
 
-PixelJam.Camera = function(camera, modifier) {
+PixelJam.Camera = function(game, camera, modifier) {
 
+	this.game = game;
 	this.camera = camera;
 	this.modifier = modifier;
 	this.transform = this.camera.transform;
@@ -9,10 +10,18 @@ PixelJam.Camera = function(camera, modifier) {
 	this.minCoords = new Kiwi.Geom.Point( -PixelJam.Play.mapSize.x , -PixelJam.Play.mapSize.y ); 
 	this.maxCoords = new Kiwi.Geom.Point(0, 0);
 
-	this.panLocation = new Kiwi.Geom.Point(0,0);
+	this.panLocation = new Kiwi.Geom.Point(0,0); //Final location
+	this.camertween = this.game 
 
 	this.workingX = 0;
 	this.workingY = 0;
+
+	this.finalPoint = null;
+
+	this.tween = this.game.tweens.create(this.panLocation);
+	this.tween.onUpdate( this.updateTween, this);
+	this.tween.onComplete( this.assignPoint, this);
+
 }
 
 PixelJam.Camera.prototype = {
@@ -33,6 +42,30 @@ PixelJam.Camera.prototype = {
 	
 	},
 
+	moveTo: function(point) {
 
+		//SNAP TO OPTION HERE!!!
+
+		//Stop any current tween
+		this.tween.stop();
+		this.finalPoint = point;
+
+		//Make a new location
+		this.panLocation = this.panLocation.clone();
+
+		//Reassign the tween object reference
+		this.tween._object = this.panLocation;
+
+		this.tween.to({x: this.finalPoint.x, y: this.finalPoint.y}, 750, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
+
+	},
+
+	updateTween: function() {
+		this.tween._valuesEnd = {x: this.finalPoint.x, y: this.finalPoint.y };
+	},
+
+	assignPoint: function() {
+		this.panLocation = this.finalPoint;
+	}
 
 }

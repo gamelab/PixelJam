@@ -19,10 +19,11 @@ PixelJam.Input.Pointer.prototype = {
 
 	unassign: function() {
 		
+		
+		if(this.callback) this.callback.call(this.context, this.pointer.id);
+
 		this.pointer = null;
 		
-		if(this.callback) this.callback.call(this.context);
-
 		this.callback = null;
 		
 		this.context = null;
