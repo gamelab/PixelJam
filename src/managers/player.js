@@ -28,6 +28,7 @@ PixelJam.Player = function(state, camera, player) {
 	this.airCharacter = new PixelJam.Character(this.state, 'air', x + 100, y - 100);
 	this.earthCharacter = new PixelJam.Character(this.state, 'earth', x - 100, y - 100);
 
+	this.moveCamera( this.fireCharacter, true );
 
 }
 
@@ -70,9 +71,9 @@ PixelJam.Player.prototype = {
 
 	},
 
-	moveCamera: function( character ) {
+	moveCamera: function( character, snap ) {
 		//
-		this.camera.moveTo( character.currentPoint );
+		this.camera.moveTo( character.currentPoint, snap );
 
 	},
 

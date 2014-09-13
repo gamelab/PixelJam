@@ -2,37 +2,41 @@
  	"fire": {
 	 	"health": 100,
 		"mana": 0,
-		"defense": 0,
+		"defense": 5,
 		"type": 0,
-		"autoAttackStrength": 0,
-		"autoAttackSpeed": 0,
-		"walkSpeed": 3
+		"autoAttackStrength": 10,
+		"autoAttackSpeed": 20,
+		"walkSpeed": 3,
+		"chaseDistance": 55
 	},
  	"water": {
 	 	"health": 100,
 		"mana": 0,
-		"defense": 0,
+		"defense": 5,
 		"type": 0,
-		"autoAttackStrength": 0,
-		"autoAttackSpeed": 0,
-		"walkSpeed": 3
+		"autoAttackStrength": 10,
+		"autoAttackSpeed": 20,
+		"walkSpeed": 3,
+		"chaseDistance": 55
 	},
  	"earth": {
 	 	"health": 100,
 		"mana": 0,
-		"defense": 0,
+		"defense": 5,
 		"type": 0,
-		"autoAttackStrength": 0,
-		"autoAttackSpeed": 0,
-		"walkSpeed": 3
+		"autoAttackStrength": 10,
+		"autoAttackSpeed": 20,
+		"walkSpeed": 3,
+		"chaseDistance": 55
 	},
  	"air": {
 	 	"health": 100,
 		"mana": 0,
-		"defense": 0,
+		"defense": 5,
 		"type": 0,
-		"autoAttackStrength": 0,
-		"autoAttackSpeed": 0,
-		"walkSpeed": 3
+		"autoAttackStrength": 10,
+		"autoAttackSpeed": 20,
+		"walkSpeed": 3,
+		"chaseDistance": 55
 	}
 }

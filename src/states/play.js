@@ -47,8 +47,6 @@ PixelJam.Play.create = function () {
 
 	this.input = new PixelJam.Input.Main(this, this.hud, this.player1, this.player2);
 
-
-	//Depth Sorting
 	//Character group
 	this.characterGroup = new Kiwi.Group(this, 'CharacterGroup');
 
@@ -108,6 +106,33 @@ PixelJam.Play.update = function() {
 	this.player1.update();
 	this.player2.update();
 
+	//Depth Sorting
+	this.characterGroup.members = this.quicksortByDepth(this.characterGroup.members);
+	
+}
+
+PixelJam.Play.quicksortByDepth = function(array) {
+	if(array.length < 2) return( array );
+	
+	var low = [];
+	var high = [];
+	var iMid = Math.floor(array.length / 2)
+	var mid = array[ iMid ];
+	for(var i = 0;  i < array.length;  i++)
+	{
+		if(i != iMid)
+		{
+			if( array[i].y < mid.y )	low.push(array[i]);
+			else	high.push(array[i]);
+		}
+	}
+	// Recurse sort
+	low = this.quicksortByDepth(low);
+	high = this.quicksortByDepth(high);
+	// Compile output
+	low.push(mid);
+	low = low.concat(high);
+	return( low );
 }
 
 PixelJam.Play.shutDown = function() {

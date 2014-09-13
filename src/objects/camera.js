@@ -8,9 +8,9 @@ PixelJam.Camera = function(game, camera, modifier) {
 	this.transform = this.camera.transform;
 
 	this.minCoords = new Kiwi.Geom.Point( -PixelJam.Play.mapSize.x , -PixelJam.Play.mapSize.y ); 
-	this.maxCoords = new Kiwi.Geom.Point(0, 0);
+	this.maxCoords = new Kiwi.Geom.Point( 0, 0 );
 
-	this.panLocation = new Kiwi.Geom.Point(0,0); //Final location
+	this.panLocation = new Kiwi.Geom.Point( 0, 0 ); //Final location
 	this.camertween = this.game 
 
 	this.workingX = 0;
@@ -52,10 +52,19 @@ PixelJam.Camera.prototype = {
 
 	update: function() {
 
+		//Pointer release
+
 		if(this.movingPointer) {
+
+			if(this.movingPointer.pointer.isUp) {
+				this.removePointer();
+				return;
+			}
+
+
 			//Transform to the camera
-			var diffX = this.movingPointer.pointer.startPoint.x - this.movingPointer.pointer.point.x;
-			var diffY = this.movingPointer.pointer.startPoint.y - this.movingPointer.pointer.point.y;
+			var diffX = this.movingPointer.pointer.point.x - this.movingPointer.pointer.startPoint.x;
+			var diffY = this.movingPointer.pointer.point.y - this.movingPointer.pointer.startPoint.y;
 
 			this.panLocation.x = this.initOffset.x + diffX * this.modifier;
 			this.panLocation.y = this.initOffset.y + diffY * this.modifier;
@@ -71,6 +80,10 @@ PixelJam.Camera.prototype = {
 
 			this.transform.x = diffX;
 			this.transform.y = diffY;
+
+			//Implement fix for boundary movements. Constrain panlocation to edges
+
+		
 		} else {
 
 			var diffX = Kiwi.Utils.GameMath.clamp(this.workingX, Math.abs(this.minCoords.x) - this.camera.width, this.maxCoords.x);
@@ -78,22 +91,14 @@ PixelJam.Camera.prototype = {
 
 			this.transform.x = diffX;
 			this.transform.y = diffY;
+
 		}
 
 		//Not following camera
-		if(!this.following) {
-			if(diffX !== this.workingX) {
-				this.panLocation.x = this.transform.x + this.camera.width * 0.5;
-			}
-
-			if(diffY !== this.workingY) {
-				this.panLocation.y = this.transform.y + this.camera.height * 0.5;
-			}
-		}
 
 	},
 
-	moveTo: function(point) {
+	moveTo: function(point, snap) {
 
 		//SNAP TO OPTION HERE!!!
 		if(this.movingPointer) return;
@@ -102,6 +107,10 @@ PixelJam.Camera.prototype = {
 		this.tween.stop();
 		this.finalPoint = point;
 		this.following = false;
+		
+		if(snap) {
+			this.assignPoint();
+		}
 
 		//Make a new location
 		this.panLocation = this.panLocation.clone();

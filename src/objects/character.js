@@ -88,31 +88,41 @@ PixelJam.Character.prototype.update = function(x,y) {
 
 	} else if(this.camera !== null && this.pointer !== null) {
 		this.destinationPoint = this.camera.camera.transformPoint( this.pointer.pointer.point );
-		this.destinationPoint.y -= this.camera.camera.ry + this.bounds.height;
+		this.destinationPoint.y -= this.camera.camera.ry + this.bounds.height * 0.5;
 		this.destinationPoint.x -= this.camera.camera.rx;
 
 	} 
 
-	var x = this.currentPoint.x - this.destinationPoint.x;
-	var y = this.currentPoint.y - this.destinationPoint.y;
-	
-	if(x != 0 && y != 0) {
-
-		var hypo = Math.sqrt(x * x + y * y);
-		var angle = this.currentPoint.angleTo( this.destinationPoint );
-
-		hypo = Math.min(hypo, this.stats.walkSpeed);
-		x = Math.cos(angle - Math.PI / 2) * hypo; 
-		y = Math.sin(angle + Math.PI / 2) * hypo;
-
-		this.currentPoint.x += x;
-		this.currentPoint.y += y;
-	}
+	this.moveCharacter();
 
 
 
 	//Check distance and stuff
 	this.x = Kiwi.Utils.GameMath.clamp(this.currentPoint.x - this.bounds.width * 0.5, PixelJam.Play.mapSize.x - this.bounds.width, 0);
 	this.y = Kiwi.Utils.GameMath.clamp(this.currentPoint.y, PixelJam.Play.mapSize.y - this.bounds.height, 0 );
+
+}
+
+PixelJam.Character.prototype.moveCharacter = function() {
+	
+	var x = this.currentPoint.x - this.destinationPoint.x;
+	var y = this.currentPoint.y - this.destinationPoint.y;
+	
+	if(x != 0 && y != 0) {
+
+		var hypo = Math.sqrt(x * x + y * y);
+
+		if(this.character && this.stats.chaseDistance > hypo ) return;
+
+		var angle = this.currentPoint.angleTo( this.destinationPoint );
+
+		hypo = Math.min(hypo, this.stats.walkSpeed);
+
+		x = Math.cos(angle - Math.PI / 2) * hypo; 
+		y = Math.sin(angle + Math.PI / 2) * hypo;
+
+		this.currentPoint.x += x;
+		this.currentPoint.y += y;
+	}
 
 }
