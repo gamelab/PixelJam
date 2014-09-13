@@ -73,9 +73,25 @@ PixelJam.Character.prototype.canIAuto = function() {
 
 
 PixelJam.Character.prototype.autoAttack = function() {
-	if( this.canIAuto() ) {
+	if( this.canIAuto() && this.spendMana(this.stats.autoCost) ) {
 		this.lastShot = this.game.time.now();
 		this.bulletManager.spawnBullet( this, this.character );
+	}
+}
+
+PixelJam.Character.prototype.spendMana = function(amount) {
+	if(this.stats.mana - amount >= 0) {
+		this.stats.mana -= amount;
+		return true;
+	}
+
+	return false;
+}
+
+PixelJam.Character.prototype.increaseMana = function(amount) {
+	this.stats.mana += amount;
+	if(this.stats.mana > 100) {
+		this.stats.mana = 100;
 	}
 }
 

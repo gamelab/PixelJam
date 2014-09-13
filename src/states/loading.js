@@ -36,12 +36,26 @@ PixelJam.Loading.preload = function () {
     this.addImage('map', 'assets/img/map.png');
 
     //HUD
-    this.addSpriteSheet('portraits', 'assets/img/portraits.png', 128, 128);
+    this.addSpriteSheet('fireAvatar', 'assets/img/hud/fire-hero-avatar.png', 74, 90);
+    this.addSpriteSheet('earthAvatar', 'assets/img/hud/earth-hero-avatar.png', 74, 90);
+    this.addSpriteSheet('airAvatar', 'assets/img/hud/wind-hero-avatar.png', 74, 90);
+    this.addSpriteSheet('waterAvatar', 'assets/img/hud/water-hero-avatar.png', 74, 90);
+
+    this.addImage('selected', 'assets/img/hud/selected-hero.png');
+    this.addImage('middleUi', 'assets/img/hud/top-ui-bg.png');
+
+    this.addImage('healthBar', 'assets/img/hud/health-bar.png');
+    this.addImage('barsBackground', 'assets/img/hud/bars-background.png');
+
+    this.addImage('earthEnergyBar', 'assets/img/hud/earth-energy-bar.png');
+    this.addImage('airEnergyBar', 'assets/img/hud/wind-energy-bar.png');
+    this.addImage('fireEnergyBar', 'assets/img/hud/fire-energy-bar.png');
+    this.addImage('waterEnergyBar', 'assets/img/hud/water-energy-bar.png');
 
 
     //Characters In game
     this.addJSON('stats', 'assets/data/stats.json');
-    
+
     this.addImage('fireBullet', 'assets/img/fireBullet.png');
     this.addImage('airBullet', 'assets/img/airBullet.png');
     this.addImage('waterBullet', 'assets/img/waterBullet.png');

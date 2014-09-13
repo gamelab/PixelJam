@@ -113,18 +113,22 @@ PixelJam.Input.Main.prototype = {
 	hudPlayer: function(playerHud, player) {
 
 		if( player.fireCharacter.alive && playerHud.fire.box.worldHitbox.containsPoint(this.tPoint)) {
+			this.hud.selectPlayer( playerHud.fire, player.player );
 			this.currentPointer.assignRelease( playerHud.fire.executeCallback, playerHud.fire); 
 			return true;
 		}
 		if( player.waterCharacter.alive && playerHud.water.box.worldHitbox.containsPoint(this.tPoint)) {
+			this.hud.selectPlayer( playerHud.water, player.player );
 			this.currentPointer.assignRelease( playerHud.water.executeCallback, playerHud.water); 
 			return true;
 		}
 		if( player.earthCharacter.alive && playerHud.earth.box.worldHitbox.containsPoint(this.tPoint)) {
+			this.hud.selectPlayer( playerHud.earth, player.player );
 			this.currentPointer.assignRelease( playerHud.earth.executeCallback, playerHud.earth); 
 			return true;
 		}
 		if( player.airCharacter.alive && playerHud.air.box.worldHitbox.containsPoint(this.tPoint)) {
+			this.hud.selectPlayer( playerHud.air, player.player );
 			this.currentPointer.assignRelease( playerHud.air.executeCallback, playerHud.air); 
 			return true;
 		}

@@ -1,7 +1,7 @@
  {
  	"fire": {
 	 	"health": 100,
-		"mana": 0,
+		"mana": 100,
 		"defense": 5,
 		"type": 1,
 		"strength": 4,
@@ -9,14 +9,15 @@
 		"autoAttackStrength": 10,
 		"autoAttackSpeed": 20,
 		"autoSpeedDelay": 100,
-		"modifier": 25,
 		"autoCooldown": 1000,
+		"autoCost": 5,
+		"modifier": 25,
 		"walkSpeed": 3,
 		"chaseDistance": 300
 	},
  	"water": {
 	 	"health": 100,
-		"mana": 0,
+		"mana": 100,
 		"defense": 5,
 		"type": 2,
 		"strength": 1,
@@ -24,6 +25,7 @@
 		"autoAttackStrength": 10,
 		"autoAttackSpeed": 20,
 		"autoSpeedDelay": 100,
+		"autoCost": 5,
 		"autoCooldown": 1000,
 		"modifier": 25,
 		"walkSpeed": 3,
@@ -31,7 +33,7 @@
 	},
  	"earth": {
 	 	"health": 100,
-		"mana": 0,
+		"mana": 100,
 		"defense": 5,
 		"type": 3,
 		"strength": 2,
@@ -40,13 +42,14 @@
 		"autoAttackSpeed": 20,
 		"autoSpeedDelay": 100,
 		"autoCooldown": 1000,
+		"autoCost": 5,
 		"modifier": 25,
 		"walkSpeed": 3,
 		"chaseDistance": 300
 	},
  	"air": {
 	 	"health": 100,
-		"mana": 0,
+		"mana": 100,
 		"defense": 5,
 		"type": 4,
 		"strength": 3,
@@ -55,6 +58,7 @@
 		"autoAttackSpeed": 20,
 		"autoSpeedDelay": 100,
 		"autoCooldown": 1000,
+		"autoCost": 5,
 		"modifier": 25,
 		"walkSpeed": 3,
 		"chaseDistance": 300
