@@ -1,9 +1,10 @@
 var PixelJam = PixelJam || {};
 
-PixelJam.Player = function(state, camera, player) {
+PixelJam.Player = function(state, camera, player, bullet) {
 
 	this.state = state;
 	this.player = player;
+	this.bulletManager = bullet;
 
 	var x = 0;
 	var y = 0;
@@ -23,10 +24,10 @@ PixelJam.Player = function(state, camera, player) {
 	this.camera = new PixelJam.Camera(this.state.game, camera, camMod);
 
 
-	this.fireCharacter = new PixelJam.Character(this.state, 'fire', x + 100, y + 100);
-	this.waterCharacter = new PixelJam.Character(this.state, 'water', x - 100, y + 100);
-	this.airCharacter = new PixelJam.Character(this.state, 'air', x + 100, y - 100);
-	this.earthCharacter = new PixelJam.Character(this.state, 'earth', x - 100, y - 100);
+	this.fireCharacter = new PixelJam.Character(this.state, 'fire', x + 100, y + 100, this.bulletManager);
+	this.waterCharacter = new PixelJam.Character(this.state, 'water', x - 100, y + 100, this.bulletManager);
+	this.airCharacter = new PixelJam.Character(this.state, 'air', x + 100, y - 100, this.bulletManager);
+	this.earthCharacter = new PixelJam.Character(this.state, 'earth', x - 100, y - 100, this.bulletManager);
 
 	this.moveCamera( this.fireCharacter, true );
 
@@ -79,23 +80,6 @@ PixelJam.Player.prototype = {
 
 	update: function() {
 		this.camera.update();
-
-		if(this.fireCharacter.pointer) {
-			//Attack?
-		}
-
-		if(this.waterCharacter.pointer) {
-			//Attack?
-		
-		}
-		if(this.airCharacter.pointer) {
-			//Attack?
-		
-		}
-		if(this.earthCharacter.pointer) {
-			//Attack?
-		}
-
 
 	}
 

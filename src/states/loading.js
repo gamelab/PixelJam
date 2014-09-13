@@ -41,6 +41,12 @@ PixelJam.Loading.preload = function () {
 
     //Characters In game
     this.addJSON('stats', 'assets/data/stats.json');
+    
+    this.addImage('fireBullet', 'assets/img/fireBullet.png');
+    this.addImage('airBullet', 'assets/img/airBullet.png');
+    this.addImage('waterBullet', 'assets/img/waterBullet.png');
+    this.addImage('earthBullet', 'assets/img/earthBullet.png');
+    
     this.addImage('fireCharacter', 'assets/img/fireCharacter.png');
     this.addImage('waterCharacter', 'assets/img/waterCharacter.png');
     this.addImage('airCharacter', 'assets/img/airCharacter.png');

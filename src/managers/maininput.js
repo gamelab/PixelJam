@@ -70,25 +70,25 @@ PixelJam.Input.Main.prototype = {
 		this.tPoint.x -= player.camera.camera.rx;
 
 		//Check vs the various players
-		if( player.fireCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
+		if(player.fireCharacter.alive &&  player.fireCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
 			player.moveToPoint( player.fireCharacter, this.currentPointer );
 			this.currentPointer.assignRelease( player.released, player );
 
 			return true;
 		} 
-		if( player.waterCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
+		if(player.fireCharacter.alive &&  player.waterCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
 			player.moveToPoint( player.waterCharacter, this.currentPointer );
 			this.currentPointer.assignRelease( player.released, player );
 
 			return true;
 		} 
-		if( player.airCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
+		if(player.airCharacter.alive &&  player.airCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
 			player.moveToPoint( player.airCharacter, this.currentPointer );
 			this.currentPointer.assignRelease( player.released, player );
 
 			return true;
 		} 
-		if( player.earthCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
+		if(player.earthCharacter.alive &&  player.earthCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
 			player.moveToPoint( player.earthCharacter, this.currentPointer );
 			this.currentPointer.assignRelease( player.released, player );
 
@@ -103,28 +103,28 @@ PixelJam.Input.Main.prototype = {
 		this.tPoint = this.hud.hudCam.transformPoint( this.currentPointer.pointer.point );
 
 		//
-		if(this.hudPlayer(this.hud.playerOneHud)) return true;
-		if(this.hudPlayer(this.hud.playerTwoHud)) return true;
+		if(this.hudPlayer(this.hud.playerOneHud, this.playerOne)) return true;
+		if(this.hudPlayer(this.hud.playerTwoHud, this.playerTwo)) return true;
 
 		return false;
 
 	},
 
-	hudPlayer: function(playerHud) {
+	hudPlayer: function(playerHud, player) {
 
-		if(playerHud.fire.box.worldHitbox.containsPoint(this.tPoint)) {
+		if( player.fireCharacter.alive && playerHud.fire.box.worldHitbox.containsPoint(this.tPoint)) {
 			this.currentPointer.assignRelease( playerHud.fire.executeCallback, playerHud.fire); 
 			return true;
 		}
-		if(playerHud.water.box.worldHitbox.containsPoint(this.tPoint)) {
+		if( player.waterCharacter.alive && playerHud.water.box.worldHitbox.containsPoint(this.tPoint)) {
 			this.currentPointer.assignRelease( playerHud.water.executeCallback, playerHud.water); 
 			return true;
 		}
-		if(playerHud.earth.box.worldHitbox.containsPoint(this.tPoint)) {
+		if( player.earthCharacter.alive && playerHud.earth.box.worldHitbox.containsPoint(this.tPoint)) {
 			this.currentPointer.assignRelease( playerHud.earth.executeCallback, playerHud.earth); 
 			return true;
 		}
-		if(playerHud.air.box.worldHitbox.containsPoint(this.tPoint)) {
+		if( player.airCharacter.alive && playerHud.air.box.worldHitbox.containsPoint(this.tPoint)) {
 			this.currentPointer.assignRelease( playerHud.air.executeCallback, playerHud.air); 
 			return true;
 		}

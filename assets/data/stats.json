@@ -3,40 +3,60 @@
 	 	"health": 100,
 		"mana": 0,
 		"defense": 5,
-		"type": 0,
+		"type": 1,
+		"strength": 4,
+		"autoRange": 400,
 		"autoAttackStrength": 10,
 		"autoAttackSpeed": 20,
+		"autoSpeedDelay": 100,
+		"modifier": 25,
+		"autoCooldown": 1000,
 		"walkSpeed": 3,
-		"chaseDistance": 55
+		"chaseDistance": 300
 	},
  	"water": {
 	 	"health": 100,
 		"mana": 0,
 		"defense": 5,
-		"type": 0,
+		"type": 2,
+		"strength": 1,
+		"autoRange": 400,
 		"autoAttackStrength": 10,
 		"autoAttackSpeed": 20,
+		"autoSpeedDelay": 100,
+		"autoCooldown": 1000,
+		"modifier": 25,
 		"walkSpeed": 3,
-		"chaseDistance": 55
+		"chaseDistance": 300
 	},
  	"earth": {
 	 	"health": 100,
 		"mana": 0,
 		"defense": 5,
-		"type": 0,
+		"type": 3,
+		"strength": 2,
+		"autoRange": 400,
 		"autoAttackStrength": 10,
 		"autoAttackSpeed": 20,
+		"autoSpeedDelay": 100,
+		"autoCooldown": 1000,
+		"modifier": 25,
 		"walkSpeed": 3,
-		"chaseDistance": 55
+		"chaseDistance": 300
 	},
  	"air": {
 	 	"health": 100,
 		"mana": 0,
 		"defense": 5,
-		"type": 0,
+		"type": 4,
+		"strength": 3,
+		"autoRange": 400,
 		"autoAttackStrength": 10,
 		"autoAttackSpeed": 20,
+		"autoSpeedDelay": 100,
+		"autoCooldown": 1000,
+		"modifier": 25,
 		"walkSpeed": 3,
-		"chaseDistance": 55
+		"chaseDistance": 300
 	}
 }

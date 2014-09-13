@@ -39,13 +39,15 @@ PixelJam.Play.create = function () {
 	this.hudCam.transform.y = this.game.stage.height;
 
 	this.map = new PixelJam.Map(this);
+	this.bulletManager = new PixelJam.BulletManager(this);
 
-	this.player1 = new PixelJam.Player(this, this.player1Cam, 1);
-	this.player2 = new PixelJam.Player(this, this.player2Cam, 2);
+	this.player1 = new PixelJam.Player(this, this.player1Cam, 1, this.bulletManager);
+	this.player2 = new PixelJam.Player(this, this.player2Cam, 2, this.bulletManager);
 
 	this.hud = new PixelJam.HUD(this, this.hudCam, this.player1, this.player2);
 
 	this.input = new PixelJam.Input.Main(this, this.hud, this.player1, this.player2);
+
 
 	//Character group
 	this.characterGroup = new Kiwi.Group(this, 'CharacterGroup');
@@ -92,8 +94,11 @@ PixelJam.Play.add = function() {
 
 	this.map.add(this);
 	this.addChild(this.characterGroup);
+
 	this.player1.add(this.characterGroup);
 	this.player2.add(this.characterGroup);
+
+	this.bulletManager.add(this);
 
 	this.hud.add(this);
 
@@ -106,10 +111,12 @@ PixelJam.Play.update = function() {
 	this.player1.update();
 	this.player2.update();
 
+
 	//Depth Sorting
 	this.characterGroup.members = this.quicksortByDepth(this.characterGroup.members);
 	
 }
+
 
 PixelJam.Play.quicksortByDepth = function(array) {
 	if(array.length < 2) return( array );

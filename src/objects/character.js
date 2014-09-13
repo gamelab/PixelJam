@@ -1,6 +1,6 @@
 var PixelJam = PixelJam || {};
 
-PixelJam.Character = function(state, type, x, y) {
+PixelJam.Character = function(state, type, x, y, bulletManager) {
 
 	//Stats, set for each character in the 'stats' json file.
 	this.stats = {
@@ -15,24 +15,30 @@ PixelJam.Character = function(state, type, x, y) {
 
 	this.state = state;
 
+	this.bulletManager = bulletManager;
+
 	var baseData = JSON.parse(this.state.data.stats.data);
 
 	switch(type) {
 		case 'fire':
 			var texture = this.state.textures.fireCharacter;
 			this.stats = baseData.fire;
+			this.type = 'fire';
 			break;
 		case 'water':
 			var texture = this.state.textures.waterCharacter;
 			this.stats = baseData.water;
+			this.type = 'water';
 			break;
 		case 'air':
 			var texture = this.state.textures.airCharacter;
 			this.stats = baseData.air;
+			this.type = 'air';
 			break;
 		case 'earth':
 			var texture = this.state.textures.earthCharacter;
 			this.stats = baseData.earth;
+			this.type = 'earth';
 			break;
 	}
 
@@ -46,6 +52,10 @@ PixelJam.Character = function(state, type, x, y) {
 
 	this.destinationPoint = new Kiwi.Geom.Point(x, y);
 
+	this.currentTarget = null;
+
+	this.lastShot = this.game.time.now();
+
 	this.camera = null;
 	this.pointer = null;
 
@@ -54,6 +64,27 @@ PixelJam.Character = function(state, type, x, y) {
 
 Kiwi.extend(PixelJam.Character, Kiwi.GameObjects.Sprite);
 
+PixelJam.Character.prototype.canIAuto = function() {
+
+	return (this.game.time.now() >= this.lastShot + this.stats.autoCooldown);
+}
+
+
+PixelJam.Character.prototype.autoAttack = function() {
+	if( this.canIAuto() ) {
+		this.lastShot = this.game.time.now();
+		this.bulletManager.spawnBullet( this, this.character );
+	}
+}
+
+PixelJam.Character.prototype.hurt = function(amount) {
+	this.stats.health -= amount;
+	if(this.stats.health <= 0) {
+		//
+		this.visible = false;
+		this.alive = false;
+	}
+}
 
 PixelJam.Character.prototype.moveToPoint = function(camera, pointer) {
 	this.camera = camera;
@@ -80,11 +111,14 @@ PixelJam.Character.prototype.followCharacter = function(character) {
 PixelJam.Character.prototype.update = function(x,y) {
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
+	if(!this.alive) return;
+
 	this.bounds = this.box.bounds;
 
 	//Constantly move the character to the destinationPoint
 	 if(this.character) {
 		this.destinationPoint = this.character.currentPoint;
+
 
 	} else if(this.camera !== null && this.pointer !== null) {
 		this.destinationPoint = this.camera.camera.transformPoint( this.pointer.pointer.point );
@@ -104,25 +138,32 @@ PixelJam.Character.prototype.update = function(x,y) {
 }
 
 PixelJam.Character.prototype.moveCharacter = function() {
-	
-	var x = this.currentPoint.x - this.destinationPoint.x;
-	var y = this.currentPoint.y - this.destinationPoint.y;
-	
-	if(x != 0 && y != 0) {
 
-		var hypo = Math.sqrt(x * x + y * y);
+	if( this.lastShot + this.stats.autoSpeedDelay <= this.game.time.now() ) {
 
-		if(this.character && this.stats.chaseDistance > hypo ) return;
+		var x = this.currentPoint.x - this.destinationPoint.x;
+		var y = this.currentPoint.y - this.destinationPoint.y;
+		
+		if(x != 0 && y != 0) {
 
-		var angle = this.currentPoint.angleTo( this.destinationPoint );
+			var hypo = Math.sqrt(x * x + y * y);
 
-		hypo = Math.min(hypo, this.stats.walkSpeed);
+			//Shoot Him if in range!!!
+			if(this.character && this.stats.autoRange > hypo ) {
+				this.autoAttack();
+				return;
+			}
 
-		x = Math.cos(angle - Math.PI / 2) * hypo; 
-		y = Math.sin(angle + Math.PI / 2) * hypo;
+			var angle = this.currentPoint.angleTo( this.destinationPoint );
 
-		this.currentPoint.x += x;
-		this.currentPoint.y += y;
+			hypo = Math.min(hypo, this.stats.walkSpeed);
+
+			x = Math.cos(angle - Math.PI / 2) * hypo; 
+			y = Math.sin(angle + Math.PI / 2) * hypo;
+
+			this.currentPoint.x += x;
+			this.currentPoint.y += y;
+		}
 	}
 
 }
