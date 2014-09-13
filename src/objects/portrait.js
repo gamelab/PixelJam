@@ -30,3 +30,10 @@ PixelJam.Portrait.prototype.executeCallback = function() {
 	//Is the input with the bounds?
 	this.callback( this.character );
 }
+
+PixelJam.Portrait.prototype.shutDown = function() {
+	this.callback = null;
+	this.character = null;
+	this.exists = false;
+	this.active = false;
+}

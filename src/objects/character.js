@@ -59,6 +59,8 @@ PixelJam.Character = function(state, type, x, y, bulletManager) {
 	this.camera = null;
 	this.pointer = null;
 
+	this.box.hitbox = new Kiwi.Geom.Rectangle(this.width * 0.25, this.height * 0.25, this.width * 0.5, this.height * 0.5);
+
 	this.update();
 }
 
@@ -80,7 +82,7 @@ PixelJam.Character.prototype.autoAttack = function() {
 PixelJam.Character.prototype.hurt = function(amount) {
 	this.stats.health -= amount;
 	if(this.stats.health <= 0) {
-		//
+		//Other hiding things now
 		this.visible = false;
 		this.alive = false;
 	}
@@ -146,24 +148,37 @@ PixelJam.Character.prototype.moveCharacter = function() {
 		
 		if(x != 0 && y != 0) {
 
-			var hypo = Math.sqrt(x * x + y * y);
+			this.hypo = Math.sqrt(x * x + y * y);
 
 			//Shoot Him if in range!!!
-			if(this.character && this.stats.autoRange > hypo ) {
+			if(this.character && this.stats.autoRange > this.hypo ) {
 				this.autoAttack();
 				return;
 			}
 
-			var angle = this.currentPoint.angleTo( this.destinationPoint );
+			this.angle = this.currentPoint.angleTo( this.destinationPoint );
 
-			hypo = Math.min(hypo, this.stats.walkSpeed);
+			this.hypo = Math.min(this.hypo, this.stats.walkSpeed);
 
-			x = Math.cos(angle - Math.PI / 2) * hypo; 
-			y = Math.sin(angle + Math.PI / 2) * hypo;
+			x = Math.cos(this.angle - Math.PI / 2) * this.hypo; 
+			y = Math.sin(this.angle + Math.PI / 2) * this.hypo;
 
 			this.currentPoint.x += x;
 			this.currentPoint.y += y;
 		}
 	}
+
+}
+PixelJam.Character.prototype.shutDown = function() {
+
+	this.exists = false;
+	this.visible = false;
+	this.alive = false;
+	this.currentPoint = null;
+	this.destinationPoint = null;
+	this.camera = null;
+	this.pointer = null;
+	this.stats = null;
+	this.bulletManager = null;
 
 }

@@ -12,6 +12,12 @@ PixelJam.Map.prototype = {
 
 	add: function(parent) {
 		parent.addChild(this.background);
+	},
+
+	shutDown: function() {
+		this.state = null;
+		this.background.exists = false;
+		this.background = null;
 	}
 
 }

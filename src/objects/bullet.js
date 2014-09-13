@@ -28,6 +28,8 @@ PixelJam.AutoBullet = function(bulletManager, type, stats, target, x, y) {
 	}
 
 	Kiwi.GameObjects.Sprite.call(this, this.state, texture, 0, 0);
+	
+	this.box.hitbox = new Kiwi.Geom.Rectangle(this.width * 0.25, this.height * 0.25, this.width * 0.5, this.height * 0.5);
 
 }
 
@@ -43,36 +45,42 @@ PixelJam.AutoBullet.prototype.update = function() {
 	this.hitbox = this.box.worldHitbox;
 
 	//Is the character I am chasing still alive?!
-	if(!this.target.alive) this.death();
+	if(!this.target || !this.target.alive) {
+		this.death();
+		return;
+	}
+
+	this.tPoint = this.target.currentPoint.clone();
+	this.tPoint.y += this.target.box.hitbox.height * 0.5;
 
 	//Move
-	var x = this.point.x - this.target.currentPoint.x;
-	var y = this.point.y - this.target.currentPoint.y;
+	this.x = this.point.x - this.tPoint.x;
+	this.y = this.point.y - this.tPoint.y;
 	
-	if(x != 0 && y != 0) {
+	if(this.x != 0 && this.y != 0) {
 
-		var hypo = Math.sqrt(x * x + y * y);
+		this.hypo = Math.sqrt(this.x * this.x + this.y * this.y);
 
 		//Shoot Him if in range!!!
-		if(this.character && this.stats.autoRange > hypo ) {
+		if(this.character && this.stats.autoRange > this.hypo ) {
 			this.autoAttack();
 			return;
 		}
 
-		var angle = this.point.angleTo( this.target.currentPoint );
+		this.angle = this.point.angleTo( this.tPoint );
 
-		hypo = Math.min(hypo, this.stats.autoAttackSpeed);
+		this.hypo = Math.min(this.hypo, this.stats.autoAttackSpeed);
 
-		x = Math.cos(angle - Math.PI / 2) * hypo; 
-		y = Math.sin(angle + Math.PI / 2) * hypo;
+		this.x = Math.cos(this.angle - Math.PI * 0.5) * this.hypo; 
+		this.y = Math.sin(this.angle + Math.PI * 0.5) * this.hypo;
 
-		this.point.x += x;
-		this.point.y += y;
+		this.point.x += this.x;
+		this.point.y += this.y;
 	}
 
 	//Move
-	this.transform.x = this.point.x - this.hitbox.width * 0.5;
-	this.transform.y = this.point.y - this.hitbox.height * 0.5;
+	this.transform.x = this.point.x;
+	this.transform.y = this.point.y;
 
 	//If i overlap the character I am targetting then owch for him
 	if( Kiwi.Geom.Intersect.rectangleToRectangle( this.target.box.worldHitbox, this.hitbox).result == true ) {
@@ -94,4 +102,9 @@ PixelJam.AutoBullet.prototype.hurtEnemy = function() {
 
 PixelJam.AutoBullet.prototype.death = function() {
 	this.exists = false;
+	this.active = false;
+	this.bulletManager.removeBullet(this);
+	this.stats = null;
+	this.target = null;
+	this.bulletManager = null;
 }

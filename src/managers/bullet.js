@@ -18,7 +18,10 @@ PixelJam.BulletManager.prototype = {
 	
 	spawnBullet: function(characterFiring, characterTarget) {
 
-		var bullet = new PixelJam.AutoBullet(this, characterFiring.type, characterFiring.stats, characterTarget, characterFiring.currentPoint.x, characterFiring.currentPoint.y);
+		var x = characterFiring.currentPoint.x;
+		var y = characterFiring.currentPoint.y + characterFiring.box.hitbox.height * 0.5;
+
+		var bullet = new PixelJam.AutoBullet(this, characterFiring.type, characterFiring.stats, characterTarget, x, y);
 		this.bulletGroup.addChild(bullet);
 		this.bullets.push(bullet);
 	},
@@ -28,11 +31,23 @@ PixelJam.BulletManager.prototype = {
 		var index = this.bullets.indexOf(bullet);
 
 		if(index == -1) {
-
 			this.bullets.splice(index);
 			bullet.exists = false;
-
 		}
+	},
+
+	shutDown: function() {
+
+		this.state = null;
+
+		for(var i = 0; i < this.bullets.length; i++) {
+			this.bullets[i].death();
+		}
+
+		this.bullets = [];
+
+		this.bulletGroup.exists = false;
+		this.bulletGroup = null;
 	}
 
 }

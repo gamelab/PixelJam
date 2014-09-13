@@ -28,6 +28,15 @@ PixelJam.Input.Pointer.prototype = {
 		
 		this.context = null;
 
+	},
+
+	delete: function() {
+		
+		this.pointer = null;
+
+		this.callback = null;
+		
+		this.context = null;
 	}
 
 }

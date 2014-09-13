@@ -65,6 +65,27 @@ PixelJam.HUD.prototype = {
 		this.playerTwoGroup.addChild( this.playerTwoHud.earth );
 		this.playerTwoGroup.addChild( this.playerTwoHud.air );
 
+	},
+
+	shutDown: function() {
+		this.playerOneHud.fire.shutDown();
+		this.playerOneHud.water.shutDown();
+		this.playerOneHud.earth.shutDown();
+		this.playerOneHud.air.shutDown();
+
+		this.playerTwoHud.fire.shutDown();
+		this.playerTwoHud.water.shutDown();
+		this.playerTwoHud.earth.shutDown();
+		this.playerTwoHud.air.shutDown();
+
+		this.hudGroup.exists = false;
+		this.hudGroup = null;
+		this.state = null;
+		this.playerOne = null;
+		this.playerTwoHud = null;
+
+		this.playerOneGroup = null;
+		this.playerTwoGroup = null;
 	}
 
 }

@@ -149,6 +149,31 @@ PixelJam.Input.Main.prototype = {
 			}
 		}
 
+	},
+
+
+	shutDown: function() {
+		this.game.input.onUp.remove(this.release, this);
+		this.game.input.onDown.remove(this.pressed, this);
+
+		this.state = null;
+		this.game = null;
+
+		this.hud = null;
+		this.playerOne = null;
+		this.playerTwo = null;
+
+
+		var len = this.activePointers.length;
+		while(len--) {
+			this.activePointers[len].delete();	
+		}
+
+		this.activePointers = [];
+
+		this.tPoint = null;
+		this.currentPointer = null;
+
 	}
 
 }

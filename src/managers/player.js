@@ -81,6 +81,24 @@ PixelJam.Player.prototype = {
 	update: function() {
 		this.camera.update();
 
+		if(!this.fireCharacter.alive && !this.waterCharacter.alive && !this.airCharacter.alive &&!this.earthCharacter.alive) {
+			this.state.lose(this.player);
+		}
+	},
+
+	shutDown: function() {
+		this.fireCharacter.shutDown();
+		this.airCharacter.shutDown();
+		this.waterCharacter.shutDown();
+		this.earthCharacter.shutDown();
+		this.camera.shutDown();
+
+		this.fireCharacter = null;
+		this.airCharacter = null;
+		this.waterCharacter = null;
+		this.earthCharacter = null;
+		this.bulletManager = null;
+		this.camera = null
 	}
 
 }

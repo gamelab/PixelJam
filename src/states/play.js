@@ -117,6 +117,13 @@ PixelJam.Play.update = function() {
 	
 }
 
+PixelJam.Play.lose = function(player) {
+
+	//Lost!
+	alert('Player '+ player + 'lost!');
+
+}
+
 
 PixelJam.Play.quicksortByDepth = function(array) {
 	if(array.length < 2) return( array );
@@ -143,6 +150,12 @@ PixelJam.Play.quicksortByDepth = function(array) {
 }
 
 PixelJam.Play.shutDown = function() {
+
+	this.player1.shutDown();
+	this.player2.shutDown();
+	this.map.shutDown();
+	this.bulletManager.shutDown();
+	this.input.shutDown();
 
 	//Remove the new cameras from rendering
 	this.game.cameras.remove(this.player1Cam);

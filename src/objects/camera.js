@@ -11,7 +11,6 @@ PixelJam.Camera = function(game, camera, modifier) {
 	this.maxCoords = new Kiwi.Geom.Point( 0, 0 );
 
 	this.panLocation = new Kiwi.Geom.Point( 0, 0 ); //Final location
-	this.camertween = this.game 
 
 	this.workingX = 0;
 	this.workingY = 0;
@@ -63,11 +62,11 @@ PixelJam.Camera.prototype = {
 
 
 			//Transform to the camera
-			var diffX = this.movingPointer.pointer.point.x - this.movingPointer.pointer.startPoint.x;
-			var diffY = this.movingPointer.pointer.point.y - this.movingPointer.pointer.startPoint.y;
+			this.diffX = this.movingPointer.pointer.point.x - this.movingPointer.pointer.startPoint.x;
+			this.diffY = this.movingPointer.pointer.point.y - this.movingPointer.pointer.startPoint.y;
 
-			this.panLocation.x = this.initOffset.x + diffX * this.modifier;
-			this.panLocation.y = this.initOffset.y + diffY * this.modifier;
+			this.panLocation.x = this.initOffset.x + this.diffX * this.modifier;
+			this.panLocation.y = this.initOffset.y + this.diffY * this.modifier;
 		}
 
 
@@ -75,22 +74,22 @@ PixelJam.Camera.prototype = {
 		this.workingY = (this.panLocation.y - this.camera.height * 0.5) * this.modifier;
 
 		if(this.modifier == -1) {
-			var diffX = Kiwi.Utils.GameMath.clamp(this.workingX, this.maxCoords.x, this.minCoords.x + this.camera.width);
-			var diffY = Kiwi.Utils.GameMath.clamp(this.workingY, this.maxCoords.y, this.minCoords.y + this.camera.height);
+			this.diffX = Kiwi.Utils.GameMath.clamp(this.workingX, this.maxCoords.x, this.minCoords.x + this.camera.width);
+			this.diffY = Kiwi.Utils.GameMath.clamp(this.workingY, this.maxCoords.y, this.minCoords.y + this.camera.height);
 
-			this.transform.x = diffX;
-			this.transform.y = diffY;
+			this.transform.x = this.diffX;
+			this.transform.y = this.diffY;
 
 			//Implement fix for boundary movements. Constrain panlocation to edges
 
 		
 		} else {
 
-			var diffX = Kiwi.Utils.GameMath.clamp(this.workingX, Math.abs(this.minCoords.x) - this.camera.width, this.maxCoords.x);
-			var diffY = Kiwi.Utils.GameMath.clamp(this.workingY, Math.abs(this.minCoords.y) - this.camera.height, this.maxCoords.y);
+			this.diffX = Kiwi.Utils.GameMath.clamp(this.workingX, Math.abs(this.minCoords.x) - this.camera.width, this.maxCoords.x);
+			this.diffY = Kiwi.Utils.GameMath.clamp(this.workingY, Math.abs(this.minCoords.y) - this.camera.height, this.maxCoords.y);
 
-			this.transform.x = diffX;
-			this.transform.y = diffY;
+			this.transform.x = this.diffX;
+			this.transform.y = this.diffY;
 
 		}
 
@@ -107,7 +106,7 @@ PixelJam.Camera.prototype = {
 		this.tween.stop();
 		this.finalPoint = point;
 		this.following = false;
-		
+
 		if(snap) {
 			this.assignPoint();
 		}
@@ -129,6 +128,29 @@ PixelJam.Camera.prototype = {
 	assignPoint: function() {
 		this.following = true;
 		this.panLocation = this.finalPoint;
+	},
+
+	shutDown: function() {
+		this.tween.stop();
+		this.following = false;
+		this.initOffset = null;
+
+		this.game = null;
+		this.camera = null;
+		this.modifier = null;
+		this.transform = null;
+
+		this.minCoords = null; 
+		this.maxCoords = null;
+
+		this.panLocation = null; //Final location
+		this.camertween = null;
+
+		this.finalPoint = null;
+
+		this.movingPointer = null;
+
+		this.tween = null;
 	}
 
 }
