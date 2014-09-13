@@ -135,7 +135,13 @@ PixelJam.Character.prototype.update = function(x,y) {
 
 	//Constantly move the character to the destinationPoint
 	 if(this.character) {
-		this.destinationPoint = this.character.currentPoint;
+
+	 	if(!this.character.alive) {
+	 		this.character = null;
+	 		this.destinationPoint = this.currentPoint.clone();
+	 	} else {
+			this.destinationPoint = this.character.currentPoint;
+		}
 
 
 	} else if(this.camera !== null && this.pointer !== null) {

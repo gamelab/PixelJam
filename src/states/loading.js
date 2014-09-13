@@ -33,6 +33,17 @@ PixelJam.Loading.preload = function () {
     /**
     * Replace with your own in-assets to load.
     **/
+
+    //Start Screen
+    this.addImage('start', 'assets/img/menus/start.png');
+    this.addImage('playButton', 'assets/img/menus/play-game.png');
+
+    //Complete Screens
+    this.addImage('youLose', 'assets/img/menus/you-lose.png');
+    this.addImage('youWin', 'assets/img/menus/you-win.png');
+    this.addImage('continue', 'assets/img/menus/continue.png');
+
+    //Map
     this.addImage('map', 'assets/img/map.png');
 
     //HUD

@@ -62,6 +62,7 @@ PixelJam.HUD = function(state, hudCam, playerOne, playerTwo) {
 	this.playerTwoHud.air.transform.scale = -1;
 	this.playerTwoSelected.transform.scale = -1;
 
+	this.gameComplete = false;
 }
 
 PixelJam.HUD.prototype = {
@@ -102,7 +103,34 @@ PixelJam.HUD.prototype = {
 		}
 	},
 
-	selectPlayerTwo: function(character) {
+	addCompleteScreens: function(player) {
+
+		if(this.gameComplete == false) {
+			this.gameComplete = true;
+
+			this.winScreen = new PixelJam.CompleteScreen(this.state, 'win', 0, 0);
+			this.loseScreen = new PixelJam.CompleteScreen(this.state, 'lose', 0, 0);
+
+			if(player == 1) {//P1 Lost
+				this.winScreen.x = -this.hudCam.transform.x + (768 - this.winScreen.background.width) * 0.5;
+				this.winScreen.y = -this.hudCam.transform.y + (512 - this.winScreen.background.height) * 0.5;
+				this.winScreen.transform.scale = -1; 
+
+				this.loseScreen.x = -this.hudCam.transform.x + (768 - this.loseScreen.background.width) * 0.5;
+				this.loseScreen.y = -this.hudCam.transform.y + 512 + (512 - this.loseScreen.background.height) * 0.5;
+			} else {
+				this.winScreen.x = -this.hudCam.transform.x + (768 - this.winScreen.background.width) * 0.5;
+				this.winScreen.y = -this.hudCam.transform.y + 512 + (512 - this.winScreen.background.height) * 0.5;
+
+				this.loseScreen.x = -this.hudCam.transform.x + (768 - this.loseScreen.background.width) * 0.5;
+				this.loseScreen.y = -this.hudCam.transform.y + (512 - this.loseScreen.background.height) * 0.5;
+				this.loseScreen.transform.scale = -1; 
+			}
+
+
+			this.state.addChild(this.winScreen);
+			this.state.addChild(this.loseScreen);
+		}
 
 	},
 

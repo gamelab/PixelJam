@@ -118,10 +118,7 @@ PixelJam.Play.update = function() {
 }
 
 PixelJam.Play.lose = function(player) {
-
-	//Lost!
-	alert('Player '+ player + 'lost!');
-
+	this.hud.addCompleteScreens(player);
 }
 
 
