@@ -27,5 +27,6 @@ PixelJam.Portrait = function(state, type, x, y, character, callback) {
 Kiwi.extend( PixelJam.Portrait, Kiwi.GameObjects.Sprite);
 
 PixelJam.Portrait.prototype.executeCallback = function() {
+	//Is the input with the bounds?
 	this.callback( this.character );
 }

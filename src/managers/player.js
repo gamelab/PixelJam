@@ -48,19 +48,30 @@ PixelJam.Player.prototype = {
 
 	},
 
-	released: function( id ) {
+	released: function( pointer ) {
+
 		//Does pointer
-		this.fireCharacter.releasePoint( id );
-		this.waterCharacter.releasePoint( id );
-		this.airCharacter.releasePoint( id );
-		this.earthCharacter.releasePoint( id );
+		if(this.fireCharacter.releasePoint( pointer.pointer.id )) {
+			//Check for overlap of an enemy character
+			this.state.pointerOverlapCharacter( this.player, pointer.pointer, this.fireCharacter );
+		}
+
+		if(this.waterCharacter.releasePoint( pointer.pointer.id )) {
+			this.state.pointerOverlapCharacter( this.player, pointer.pointer, this.waterCharacter );
+		}
+
+		if(this.airCharacter.releasePoint( pointer.pointer.id )) {
+			this.state.pointerOverlapCharacter( this.player, pointer.pointer, this.airCharacter );
+		}
+
+		if(this.earthCharacter.releasePoint( pointer.pointer.id )) {
+			this.state.pointerOverlapCharacter( this.player, pointer.pointer, this.earthCharacter );
+		}
 
 	},
 
 	moveCamera: function( character ) {
 		//
-		console.log('Moving to Character');
-
 		this.camera.moveTo( character.currentPoint );
 
 	},
@@ -70,7 +81,6 @@ PixelJam.Player.prototype = {
 
 		if(this.fireCharacter.pointer) {
 			//Attack?
-
 		}
 
 		if(this.waterCharacter.pointer) {
@@ -83,7 +93,6 @@ PixelJam.Player.prototype = {
 		}
 		if(this.earthCharacter.pointer) {
 			//Attack?
-
 		}
 
 

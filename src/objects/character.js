@@ -58,6 +58,7 @@ Kiwi.extend(PixelJam.Character, Kiwi.GameObjects.Sprite);
 PixelJam.Character.prototype.moveToPoint = function(camera, pointer) {
 	this.camera = camera;
 	this.pointer = pointer;
+	this.character = null;
 }
 
 PixelJam.Character.prototype.releasePoint = function(id) {
@@ -65,10 +66,13 @@ PixelJam.Character.prototype.releasePoint = function(id) {
 	if(this.pointer !== null && this.pointer.pointer.id == id) {
 		this.camera = null;
 		this.pointer = null;
+		return true;
 	}
+
+	return false;
 }
 
-PixelJam.Character.prototype.attackCharacter = function(character) {
+PixelJam.Character.prototype.followCharacter = function(character) {
 	this.character = character;
 }
 
@@ -79,7 +83,7 @@ PixelJam.Character.prototype.update = function(x,y) {
 	this.bounds = this.box.bounds;
 
 	//Constantly move the character to the destinationPoint
-	 if(!this.character) {
+	 if(this.character) {
 		this.destinationPoint = this.character.currentPoint;
 
 	} else if(this.camera !== null && this.pointer !== null) {

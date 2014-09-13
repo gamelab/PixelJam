@@ -43,12 +43,17 @@ PixelJam.Input.Main.prototype = {
 			//Player 1
 			if(!this.playerInput( this.playerOne )) {
 				//Then camera movement
+				if(this.playerOne.camera.assignPointer(this.currentPointer)) 
+				this.currentPointer.assignRelease( this.playerOne.camera.removePointer, this.playerOne.camera );
 			}
 		
 		} else {
 			//Player 2
 			if(!this.playerInput( this.playerTwo )) {
 				//Then camera movement
+				if(this.playerTwo.camera.assignPointer(this.currentPointer)) 
+				this.currentPointer.assignRelease( this.playerTwo.camera.removePointer, this.playerTwo.camera );
+
 			} 
 
 		}
@@ -139,6 +144,7 @@ PixelJam.Input.Main.prototype = {
 		while(len--) {
 			if(pointer.id == this.activePointers[len].pointer.id) {
 				this.activePointers[len].unassign();
+				this.activePointers.splice( len, 1 );
 				break;
 			}
 		}

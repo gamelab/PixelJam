@@ -57,6 +57,39 @@ PixelJam.Play.create = function () {
  	this.add(); 
 }
 
+PixelJam.Play.pointerOverlapCharacter = function(player, pointer, character) {
+
+	if(player == 1) {
+		var pobj = this.player1;
+		var pobj2 = this.player2;
+	} else if(player == 2) {
+		var pobj = this.player2;
+		var pobj2 = this.player1;
+	}
+
+	var point = pobj.camera.camera.transformPoint( pointer.point ); //Move this to the pointer class. Have to do it too often
+	point.y -= pobj.camera.camera.ry;
+	point.x -= pobj.camera.camera.rx;
+
+	if( pobj2.fireCharacter.box.worldHitbox.containsPoint( point ) ) {
+		character.followCharacter( pobj2.fireCharacter );
+	}
+
+	if( pobj2.waterCharacter.box.worldHitbox.containsPoint( point ) ) {
+		character.followCharacter( pobj2.waterCharacter );
+	}
+
+	if( pobj2.airCharacter.box.worldHitbox.containsPoint( point ) ) {
+		character.followCharacter( pobj2.airCharacter );
+	}
+
+	if( pobj2.earthCharacter.box.worldHitbox.containsPoint( point ) ) {
+		character.followCharacter( pobj2.earthCharacter );
+	}
+
+}
+
+
 PixelJam.Play.add = function() {
 
 	this.map.add(this);
