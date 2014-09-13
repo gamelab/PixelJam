@@ -67,14 +67,11 @@ PixelJam.Loading.preload = function () {
     //Characters In game
     this.addJSON('stats', 'assets/data/stats.json');
 
-    this.addImage('fireBullet', 'assets/img/fireBullet.png');
-    this.addImage('airBullet', 'assets/img/airBullet.png');
-    this.addImage('waterBullet', 'assets/img/waterBullet.png');
-    this.addImage('earthBullet', 'assets/img/earthBullet.png');
+    this.addSpriteSheet('autoAttackSprite', 'assets/img/attacks/auto-attack-sprites.png', 420 / 6, 640 / 4);
     
-    this.addImage('fireCharacter', 'assets/img/fireCharacter.png');
-    this.addImage('waterCharacter', 'assets/img/waterCharacter.png');
-    this.addImage('airCharacter', 'assets/img/airCharacter.png');
-    this.addImage('earthCharacter', 'assets/img/earthCharacter.png');
+    this.addSpriteSheet('fireCharacter', 'assets/img/fire-character-sprite.png', 1080 / 6, 720 / 4);
+    this.addSpriteSheet('waterCharacter', 'assets/img/water-character-sprite.png', 1080 / 6, 720 / 4);
+    this.addSpriteSheet('airCharacter', 'assets/img/wind-character-sprite.png', 1080 / 6, 720 / 4);
+    this.addSpriteSheet('earthCharacter', 'assets/img/earth-character-sprite.png', 1080 / 6, 720 / 4);
 
 };

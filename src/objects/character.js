@@ -44,6 +44,12 @@ PixelJam.Character = function(state, type, x, y, bulletManager) {
 
 	Kiwi.GameObjects.Sprite.call(this, state, texture, 0, 0);
 
+	// name  cells  speed  [loop=false]  [play=false]  [addToAtlas=true] )
+	this.animation.add('down', [0,1,2,3,4,5], 0.1, true, true, false);
+	this.animation.add('up', [6,7,8,9,10,11], 0.1, true, false, false);
+	this.animation.add('left', [12,13,14,15,16,17], 0.1, true, false, false);
+	this.animation.add('right', [18,19,20,21,22,23], 0.1, true, false, false);
+
 	this.alive = true;
 
 	this.currentPoint = new Kiwi.Geom.Point(x, y);
@@ -180,10 +186,28 @@ PixelJam.Character.prototype.moveCharacter = function() {
 
 			this.angle = this.currentPoint.angleTo( this.destinationPoint );
 
+			//Angle Check
+			if( this.angle < Kiwi.Utils.GameMath.PI_4  &&  this.angle > -Kiwi.Utils.GameMath.PI_4 ) {
+				this.animation.play('down', false);
+
+			} else if(this.angle < Kiwi.Utils.GameMath.PI_4 + Kiwi.Utils.GameMath.PI_2  &&  this.angle > Kiwi.Utils.GameMath.PI_4 ) {
+				this.animation.play('right', false);
+
+			} else if(this.angle > -(Kiwi.Utils.GameMath.PI_4 + Kiwi.Utils.GameMath.PI_2) && this.angle < -Kiwi.Utils.GameMath.PI_4 ) {
+				this.animation.play('left', false);
+
+			} else {
+				this.animation.play('up', false);
+
+			}
+
+			//
+
+
 			this.hypo = Math.min(this.hypo, this.stats.walkSpeed);
 
-			x = Math.cos(this.angle - Math.PI / 2) * this.hypo; 
-			y = Math.sin(this.angle + Math.PI / 2) * this.hypo;
+			x = Math.cos(this.angle - Kiwi.Utils.GameMath.PI_2 ) * this.hypo; 
+			y = Math.sin(this.angle + Kiwi.Utils.GameMath.PI_2 ) * this.hypo;
 
 			this.currentPoint.x += x;
 			this.currentPoint.y += y;

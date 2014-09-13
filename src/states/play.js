@@ -95,10 +95,10 @@ PixelJam.Play.add = function() {
 	this.map.add(this);
 	this.addChild(this.characterGroup);
 
+	this.bulletManager.add(this);
 	this.player1.add(this.characterGroup);
 	this.player2.add(this.characterGroup);
 
-	this.bulletManager.add(this);
 
 	this.hud.add(this);
 

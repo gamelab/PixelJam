@@ -12,24 +12,30 @@ PixelJam.AutoBullet = function(bulletManager, type, stats, target, x, y) {
 
 	this.stats = stats;
 
+	var texture = this.state.textures.autoAttackSprite;
+
+	Kiwi.GameObjects.Sprite.call(this, this.state, texture, 0, 0);
+
 	switch(type) {
-		case 'fire':
-			var texture = this.state.textures.fireBullet;
+		case 'fire':// name  cells  speed  [loop=false]  [play=false]  [addToAtlas=true] )
+			this.animation.add('fire', [6,7,8,9,10,11], 0.05, true, true, false);
 			break;
 		case 'water':
-			var texture = this.state.textures.waterBullet;
+			this.animation.add('water', [18,19,20,21,22,23], 0.05, true, true, false);
 			break;
 		case 'air':
-			var texture = this.state.textures.airBullet;
+			this.animation.add('air', [12,13,14,15,16,17], 0.05, true, true, false);
 			break;
 		case 'earth':
-			var texture = this.state.textures.earthBullet;
+			this.animation.add('earth', [0,1,2,3,4,5], 0.05, true, true, false);
 			break;
 	}
 
-	Kiwi.GameObjects.Sprite.call(this, this.state, texture, 0, 0);
 	
-	this.box.hitbox = new Kiwi.Geom.Rectangle(this.width * 0.25, this.height * 0.25, this.width * 0.5, this.height * 0.5);
+	this.box.hitbox = new Kiwi.Geom.Rectangle(13, 11, 38, 33);
+	this.rotPointX = 33;
+	this.rotPointY = 26;
+	this.transform.scaleY = -1;
 
 }
 
@@ -71,15 +77,17 @@ PixelJam.AutoBullet.prototype.update = function() {
 
 		this.hypo = Math.min(this.hypo, this.stats.autoAttackSpeed);
 
-		this.x = Math.cos(this.angle - Math.PI * 0.5) * this.hypo; 
-		this.y = Math.sin(this.angle + Math.PI * 0.5) * this.hypo;
+		this.x = Math.cos(this.angle - Kiwi.Utils.GameMath.PI_2) * this.hypo; 
+		this.y = Math.sin(this.angle + Kiwi.Utils.GameMath.PI_2) * this.hypo;
 
 		this.point.x += this.x;
 		this.point.y += this.y;
+
+		this.rotation = -this.angle;
 	}
 
 	//Move
-	this.transform.x = this.point.x;
+	this.transform.x = this.point.x - this.box.bounds.width * 0.5;
 	this.transform.y = this.point.y;
 
 	//If i overlap the character I am targetting then owch for him
