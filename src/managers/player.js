@@ -58,6 +58,11 @@ PixelJam.Player = function(state, camera, player, bullet) {
 	this.airBase = new PixelJam.Base(this.state, this.airCharacter);
 	this.earthBase = new PixelJam.Base(this.state, this.earthCharacter);
 
+	this.fireFx = new PixelJam.FX(this.state, this.fireCharacter, this.player);
+	this.airFx = new PixelJam.FX(this.state, this.airCharacter, this.player);
+	this.waterFx = new PixelJam.FX(this.state, this.waterCharacter, this.player);
+	this.earthFx = new PixelJam.FX(this.state, this.earthCharacter, this.player);
+
 	this.camera.moveTo( new Kiwi.Geom.Point(1065, camY ), true);
 
 }
@@ -76,6 +81,11 @@ PixelJam.Player.prototype = {
 		parent.addChild(this.waterBase);
 		parent.addChild(this.airBase);
 		parent.addChild(this.earthBase);
+
+		parent.addChild(this.fireFx);
+		parent.addChild(this.airFx);
+		parent.addChild(this.waterFx);
+		parent.addChild(this.earthFx);
 	},
 
 	moveToPoint: function( character, pointer ) {

@@ -17,6 +17,8 @@ PixelJam.Character = function(state, type, x, y, bulletManager, player) {
 
 	this.player = player;
 
+	this.alpha = 1;
+
 	this.bulletManager = bulletManager;
 
 	var baseData = JSON.parse(this.state.data.stats.data);
@@ -44,10 +46,10 @@ PixelJam.Character = function(state, type, x, y, bulletManager, player) {
 	Kiwi.GameObjects.Sprite.call(this, state, texture, 0, 0);
 
 	// name  cells  speed  [loop=false]  [play=false]  [addToAtlas=true] )
-	this.animation.add('down', [0,1,2,3,4,5], 0.1, true, true, false);
-	this.animation.add('up', [6,7,8,9,10,11], 0.1, true, false, false);
-	this.animation.add('left', [12,13,14,15,16,17], 0.1, true, false, false);
-	this.animation.add('right', [18,19,20,21,22,23], 0.1, true, false, false);
+	this.animation.add('down', [0,1,2,3,4,5], 0.15, true, true, false);
+	this.animation.add('up', [6,7,8,9,10,11], 0.15, true, false, false);
+	this.animation.add('left', [12,13,14,15,16,17], 0.15, true, false, false);
+	this.animation.add('right', [18,19,20,21,22,23], 0.15, true, false, false);
 
 	this.alive = true;
 
@@ -107,7 +109,6 @@ PixelJam.Character.prototype.hurt = function(amount) {
 	this.stats.health -= amount;
 	if(this.stats.health <= 0) {
 		//Other hiding things now
-		this.visible = false;
 		this.alive = false;
 	}
 }
@@ -146,8 +147,10 @@ PixelJam.Character.prototype.hurtBase = function(base) {
 PixelJam.Character.prototype.update = function(x,y) {
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
-	if(!this.alive) return;
-
+	if(!this.alive) {
+		this.alpha = Math.max( 0, this.alpha - 0.05);
+		return;
+	}
 	this.bounds = this.box.bounds;
 
 	//Constantly move the character to the destinationPoint

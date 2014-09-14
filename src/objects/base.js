@@ -14,6 +14,8 @@ PixelJam.Base = function(state, character) {
 	this.character = character;
 	this.alive = true;
 
+	this.alpha = 1;
+
 	this.x = this.character.x + (this.character.width - this.width) * 0.5;
 	this.y = this.character.y + this.character.height - this.height + 30;
 
@@ -54,14 +56,13 @@ PixelJam.Base.prototype.update = function() {
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
 
-	if(this.character.health <= 0) {
-		this.base.visible = false; //If the character is dead then hide
-		return;
-	}
+	if(this.character.health <= 0) this.alive = false;
+	
 
 	if(!this.alive) {
-		this.visible = false; //Hide Base
+		this.alpha = Math.max(0, this.alpha - 0.05);
 		this.character.hurt(1);
+		return;
 	}
 
 	if( !this.currentPoint.distanceCompare( this.character.currentPoint, this.radius ) ) {

@@ -66,6 +66,7 @@ PixelJam.Loading.preload = function () {
     this.addImage('waterEnergyBar', 'assets/img/hud/water-energy-bar.png');
 
 
+
     //UI
     this.addSpriteSheet('circles', 'assets/img/drag-ui/circles.png', 462 / 3, 105);
     this.addImage('lineInBetween', 'assets/img/drag-ui/drag-line-between-circles.png');
@@ -74,6 +75,8 @@ PixelJam.Loading.preload = function () {
     this.addJSON('stats', 'assets/data/stats.json');
 
     this.addSpriteSheet('autoAttackSprite', 'assets/img/attacks/auto-attack-sprites.png', 420 / 6, 640 / 4);
+    this.addSpriteSheet('teamFX', 'assets/img/black-and-white-team-pfx.png', 780 / 6, 220 / 2 );
+    
     
     this.addSpriteSheet('fireCharacter', 'assets/img/fire-character-sprite.png', 1080 / 6, 720 / 4);
     this.addSpriteSheet('waterCharacter', 'assets/img/water-character-sprite.png', 1080 / 6, 720 / 4);
