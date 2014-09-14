@@ -48,6 +48,8 @@ PixelJam.Play.create = function () {
 
 	this.input = new PixelJam.Input.Main(this, this.hud, this.player1, this.player2);
 
+	this.resources = new PixelJam.Resources(this, this.player1, this.player2);
+
 
 	//Character group
 	this.characterGroup = new Kiwi.Group(this, 'CharacterGroup');
@@ -126,6 +128,7 @@ PixelJam.Play.add = function() {
 	this.player1.addBases(this);
 	this.player2.addBases(this);
 	
+	this.resources.add(this);
 	this.hud.addUnderUI(this);
 
 	this.bulletManager.add(this);
@@ -147,6 +150,7 @@ PixelJam.Play.update = function() {
 	this.player2.update();
 
 	this.hud.update();
+	this.resources.update();
 
 	//Depth Sorting
 	this.characterGroup.members = this.quicksortByDepth(this.characterGroup.members);
