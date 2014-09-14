@@ -29,6 +29,11 @@ PixelJam.Player = function(state, camera, player, bullet) {
 	this.airCharacter = new PixelJam.Character(this.state, 'air', x + 100, y - 100, this.bulletManager);
 	this.earthCharacter = new PixelJam.Character(this.state, 'earth', x - 100, y - 100, this.bulletManager);
 
+	this.fireBase = new PixelJam.Base(this.state, this.fireCharacter);
+	this.waterBase = new PixelJam.Base(this.state, this.waterCharacter);
+	this.airBase = new PixelJam.Base(this.state, this.airCharacter);
+	this.earthBase = new PixelJam.Base(this.state, this.earthCharacter);
+
 	this.moveCamera( this.fireCharacter, true );
 
 }
@@ -40,6 +45,13 @@ PixelJam.Player.prototype = {
 		parent.addChild(this.waterCharacter);
 		parent.addChild(this.airCharacter);
 		parent.addChild(this.earthCharacter);
+	},
+
+	addBases: function(parent) {
+		parent.addChild(this.fireBase);
+		parent.addChild(this.waterBase);
+		parent.addChild(this.airBase);
+		parent.addChild(this.earthBase);
 	},
 
 	moveToPoint: function( character, pointer ) {
@@ -93,10 +105,21 @@ PixelJam.Player.prototype = {
 		this.earthCharacter.shutDown();
 		this.camera.shutDown();
 
+		this.fireBase.shutDown();
+		this.waterBase.shutDown();
+		this.airBase.shutDown();
+		this.earthBase.shutDown();
+
 		this.fireCharacter = null;
 		this.airCharacter = null;
 		this.waterCharacter = null;
 		this.earthCharacter = null;
+
+		this.fireBase = null;
+		this.waterBase = null;
+		this.airBase = null;
+		this.earthBase = null;
+		
 		this.bulletManager = null;
 		this.camera = null
 	}

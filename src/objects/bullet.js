@@ -49,15 +49,15 @@ PixelJam.AutoBullet.prototype.update = function() {
 	Kiwi.GameObjects.Sprite.prototype.update.call(this);
 
 	this.hitbox = this.box.worldHitbox;
+	this.targetHitbox = this.target.box.worldHitbox;
+	this.tPoint = new Kiwi.Geom.Point( this.targetHitbox.x + this.targetHitbox.width * 0.5, this.targetHitbox.y + this.targetHitbox.height * 0.5 );
+
 
 	//Is the character I am chasing still alive?!
 	if(!this.target || !this.target.alive) {
 		this.death();
 		return;
 	}
-
-	this.tPoint = this.target.currentPoint.clone();
-	this.tPoint.y += this.target.box.hitbox.height * 0.5;
 
 	//Move
 	this.x = this.point.x - this.tPoint.x;
@@ -91,7 +91,7 @@ PixelJam.AutoBullet.prototype.update = function() {
 	this.transform.y = this.point.y;
 
 	//If i overlap the character I am targetting then owch for him
-	if( Kiwi.Geom.Intersect.rectangleToRectangle( this.target.box.worldHitbox, this.hitbox).result == true ) {
+	if( Kiwi.Geom.Intersect.rectangleToRectangle( this.targetHitbox, this.hitbox).result == true ) {
 		this.hurtEnemy();
 	}
 
@@ -111,7 +111,7 @@ PixelJam.AutoBullet.prototype.hurtEnemy = function() {
 PixelJam.AutoBullet.prototype.death = function() {
 	this.exists = false;
 	this.active = false;
-	this.bulletManager.removeBullet(this);
+	if(this.bulletManager) this.bulletManager.removeBullet(this);
 	this.stats = null;
 	this.target = null;
 	this.bulletManager = null;

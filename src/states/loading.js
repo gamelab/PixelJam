@@ -46,6 +46,9 @@ PixelJam.Loading.preload = function () {
     //Map
     this.addImage('map', 'assets/img/map.png');
 
+    this.addSpriteSheet('bases', 'assets/img/bases.png', 900 / 6, 600 / 4);
+    this.addSpriteSheet('resources', 'assets/img/resources.png', 900 / 6, 600 / 4);
+
     //HUD
     this.addSpriteSheet('fireAvatar', 'assets/img/hud/fire-hero-avatar.png', 74, 90);
     this.addSpriteSheet('earthAvatar', 'assets/img/hud/earth-hero-avatar.png', 74, 90);

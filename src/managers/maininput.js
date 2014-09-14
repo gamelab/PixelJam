@@ -76,7 +76,7 @@ PixelJam.Input.Main.prototype = {
 
 			return true;
 		} 
-		if(player.fireCharacter.alive &&  player.waterCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
+		if(player.waterCharacter.alive &&  player.waterCharacter.box.worldHitbox.containsPoint(this.tPoint) ) {
 			player.moveToPoint( player.waterCharacter, this.currentPointer );
 			this.currentPointer.assignRelease( player.released, player );
 
@@ -94,6 +94,8 @@ PixelJam.Input.Main.prototype = {
 
 			return true;
 		} 
+
+		
 
 		return false;
 	},

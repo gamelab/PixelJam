@@ -18,27 +18,24 @@ PixelJam.Character = function(state, type, x, y, bulletManager) {
 	this.bulletManager = bulletManager;
 
 	var baseData = JSON.parse(this.state.data.stats.data);
+	this.type = type;
 
 	switch(type) {
 		case 'fire':
 			var texture = this.state.textures.fireCharacter;
 			this.stats = baseData.fire;
-			this.type = 'fire';
 			break;
 		case 'water':
 			var texture = this.state.textures.waterCharacter;
 			this.stats = baseData.water;
-			this.type = 'water';
 			break;
 		case 'air':
 			var texture = this.state.textures.airCharacter;
 			this.stats = baseData.air;
-			this.type = 'air';
 			break;
 		case 'earth':
 			var texture = this.state.textures.earthCharacter;
 			this.stats = baseData.earth;
-			this.type = 'earth';
 			break;
 	}
 
@@ -64,6 +61,7 @@ PixelJam.Character = function(state, type, x, y, bulletManager) {
 
 	this.camera = null;
 	this.pointer = null;
+	this.target  = null;
 
 	this.box.hitbox = new Kiwi.Geom.Rectangle(this.width * 0.25, this.height * 0.25, this.width * 0.5, this.height * 0.5);
 
@@ -78,10 +76,10 @@ PixelJam.Character.prototype.canIAuto = function() {
 }
 
 
-PixelJam.Character.prototype.autoAttack = function() {
+PixelJam.Character.prototype.autoAttack = function( target ) {
 	if( this.canIAuto() && this.spendMana(this.stats.autoCost) ) {
 		this.lastShot = this.game.time.now();
-		this.bulletManager.spawnBullet( this, this.character );
+		this.bulletManager.spawnBullet( this, target );
 	}
 }
 
@@ -113,7 +111,7 @@ PixelJam.Character.prototype.hurt = function(amount) {
 PixelJam.Character.prototype.moveToPoint = function(camera, pointer) {
 	this.camera = camera;
 	this.pointer = pointer;
-	this.character = null;
+	this.target = null;
 }
 
 PixelJam.Character.prototype.releasePoint = function(id) {
@@ -128,7 +126,11 @@ PixelJam.Character.prototype.releasePoint = function(id) {
 }
 
 PixelJam.Character.prototype.followCharacter = function(character) {
-	this.character = character;
+	this.target = character;
+}
+
+PixelJam.Character.prototype.hurtBase = function(base) {
+	this.target = base;
 }
 
 
@@ -140,17 +142,15 @@ PixelJam.Character.prototype.update = function(x,y) {
 	this.bounds = this.box.bounds;
 
 	//Constantly move the character to the destinationPoint
-	 if(this.character) {
-
-	 	if(!this.character.alive) {
-	 		this.character = null;
+	 if(this.target) {
+	 	if(!this.target.alive) {
+	 		this.target = null;
 	 		this.destinationPoint = this.currentPoint.clone();
 	 	} else {
-			this.destinationPoint = this.character.currentPoint;
+			this.destinationPoint = this.target.currentPoint;
 		}
 
-
-	} else if(this.camera !== null && this.pointer !== null) {
+	}  else if(this.camera !== null && this.pointer !== null) {
 		this.destinationPoint = this.camera.camera.transformPoint( this.pointer.pointer.point );
 		this.destinationPoint.y -= this.camera.camera.ry + this.bounds.height * 0.5;
 		this.destinationPoint.x -= this.camera.camera.rx;
@@ -179,10 +179,11 @@ PixelJam.Character.prototype.moveCharacter = function() {
 			this.hypo = Math.sqrt(x * x + y * y);
 
 			//Shoot Him if in range!!!
-			if(this.character && this.stats.autoRange > this.hypo ) {
-				this.autoAttack();
+			if(this.target && this.stats.autoRange > this.hypo ) {
+				this.autoAttack(this.target);
 				return;
 			}
+
 
 			this.angle = this.currentPoint.angleTo( this.destinationPoint );
 
@@ -219,6 +220,7 @@ PixelJam.Character.prototype.shutDown = function() {
 
 	this.exists = false;
 	this.visible = false;
+	this.target  = null;
 	this.alive = false;
 	this.currentPoint = null;
 	this.destinationPoint = null;

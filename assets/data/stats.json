@@ -62,5 +62,9 @@
 		"modifier": 25,
 		"walkSpeed": 3,
 		"chaseDistance": 300
+	},
+	"base": {
+		"defense": 20,
+		"type": 5
 	}
 }

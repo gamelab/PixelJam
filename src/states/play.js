@@ -73,18 +73,44 @@ PixelJam.Play.pointerOverlapCharacter = function(player, pointer, character) {
 
 	if( pobj2.fireCharacter.box.worldHitbox.containsPoint( point ) ) {
 		character.followCharacter( pobj2.fireCharacter );
+		return;
 	}
 
 	if( pobj2.waterCharacter.box.worldHitbox.containsPoint( point ) ) {
 		character.followCharacter( pobj2.waterCharacter );
+		return;
 	}
 
 	if( pobj2.airCharacter.box.worldHitbox.containsPoint( point ) ) {
 		character.followCharacter( pobj2.airCharacter );
+		return;
 	}
 
 	if( pobj2.earthCharacter.box.worldHitbox.containsPoint( point ) ) {
 		character.followCharacter( pobj2.earthCharacter );
+		return;
+	}
+
+	//Base?!
+
+	if( pobj2.fireBase.box.worldHitbox.containsPoint( point ) ) {
+		character.hurtBase( pobj2.fireBase );
+		return;
+	}
+
+	if( pobj2.waterBase.box.worldHitbox.containsPoint( point ) ) {
+		character.hurtBase( pobj2.waterBase );
+		return;
+	}
+
+	if( pobj2.airBase.box.worldHitbox.containsPoint( point ) ) {
+		character.hurtBase( pobj2.airBase );
+		return;
+	}
+
+	if( pobj2.earthBase.box.worldHitbox.containsPoint( point ) ) {
+		character.hurtBase( pobj2.earthBase );
+		return;
 	}
 
 }
@@ -93,9 +119,11 @@ PixelJam.Play.pointerOverlapCharacter = function(player, pointer, character) {
 PixelJam.Play.add = function() {
 
 	this.map.add(this);
+	this.player1.addBases(this);
+	this.player2.addBases(this);
+	this.bulletManager.add(this);
 	this.addChild(this.characterGroup);
 
-	this.bulletManager.add(this);
 	this.player1.add(this.characterGroup);
 	this.player2.add(this.characterGroup);
 
