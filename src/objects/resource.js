@@ -28,6 +28,7 @@ PixelJam.Resource = function(state, type) {
 	this.x -= this.width * 0.5;
 	this.y -= this.height * 0.5;
 	this.used = false;
+	this.alpha = 0;
 
 	this.box.hitbox = new Kiwi.Geom.Rectangle(56, 72, 36, 31);
 
@@ -56,6 +57,9 @@ PixelJam.Resource.prototype.update = function() {
 	} else if(this.used) {
 		this.alpha -= 0.05;
 		return;
+	} else {
+
+		this.alpha = Math.min(1, this.alpha + 0.05);
 	}
 
 	this.targetHitbox = this.box.worldHitbox;

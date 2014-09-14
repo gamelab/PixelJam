@@ -10,11 +10,11 @@ PixelJam.Resources = function(state, playerOne, playerTwo) {
 	this.fireSpawnLocations = [
 		{
 			x: 993,
-			y: 192
+			y: 402
 		},
 		{
 			x: 1148,
-			y: 392
+			y: 422
 		},
 		{
 			x: 1430,

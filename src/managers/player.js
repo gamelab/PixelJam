@@ -11,36 +11,36 @@ PixelJam.Player = function(state, camera, player, bullet) {
 
 	if(this.player == 1) {
 
-		var x1 = 320 - 100;
-		var y1 = 1630 - 100;
 
-		var x2 = 320 - 35;
-		var y2 = 1630 - 35;
+		var x1 = 1065 - 225;
+		var y1 = 1780;
 
-		var x3 = 320 + 35;
-		var y3 = 1630 + 35;
+		var x2 = 1065 - 75;
+		var y2 = 1780;
 
-		var x4 = 320 + 100;
-		var y4 = 1630 + 100;
+		var x3 = 1065 + 75;
+		var y3 = 1780;
 
+		var x4 = 1065 + 225;
+		var y4 = 1780;
 		camMod = -1;
+		var camY = 1800;
 	
 	} else if(this.player == 2) {
 
-		var x = 1640;
-		var y = 250; //Move to bottom left
+		var x1 = 1065 - 225;
+		var y1 = 75;
 
-		var x1 = 1640 - 100;
-		var y1 = 250 - 100;
+		var x2 = 1065 - 75;
+		var y2 = 75;
 
-		var x2 = 1640 - 35;
-		var y2 = 250 - 35;
+		var x3 = 1065 + 75;
+		var y3 = 75;
 
-		var x3 = 1640 + 35;
-		var y3 = 250 + 35;
+		var x4 = 1065 + 225;
+		var y4 = 75;
 
-		var x4 = 1640 + 100;
-		var y4 = 250 + 100;
+		var camY = 250;
 
 		camera.transform.rotation = Math.PI;
 
@@ -58,7 +58,7 @@ PixelJam.Player = function(state, camera, player, bullet) {
 	this.airBase = new PixelJam.Base(this.state, this.airCharacter);
 	this.earthBase = new PixelJam.Base(this.state, this.earthCharacter);
 
-	this.moveCamera( this.earthCharacter, true );
+	this.camera.moveTo( new Kiwi.Geom.Point(1065, camY ), true);
 
 }
 
