@@ -8,16 +8,16 @@ PixelJam.Base = function(state, character) {
 
 	this.stats = JSON.parse(this.state.data.stats.data).base;
 
-	this.health = 100;
-	this.radius = 200;
-	this.manaRate = 3; //Per frame
+	this.health = this.stats.health;
+	this.radius = this.stats.radius;
+	this.manaRate = this.stats.manaRate; //Per frame
 	this.character = character;
 	this.alive = true;
 
 	this.x = this.character.x + (this.character.width - this.width) * 0.5;
 	this.y = this.character.y + this.character.height - this.height + 30;
 
-	this.currentPoint = new Kiwi.Geom.Point(this.x + this.width * 0.5, this.y + this.height * 0.5);
+	this.currentPoint = new Kiwi.Geom.Point(this.x + this.width * 0.5, this.y - this.height * 0.5);
 
 
 	switch(this.character.type) {

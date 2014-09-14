@@ -45,7 +45,6 @@ PixelJam.Loading.preload = function () {
 
     //Map
     this.addImage('map', 'assets/img/map.png');
-
     this.addSpriteSheet('bases', 'assets/img/bases.png', 900 / 6, 600 / 4);
     this.addSpriteSheet('resources', 'assets/img/resources.png', 900 / 6, 600 / 4);
 
@@ -66,6 +65,10 @@ PixelJam.Loading.preload = function () {
     this.addImage('fireEnergyBar', 'assets/img/hud/fire-energy-bar.png');
     this.addImage('waterEnergyBar', 'assets/img/hud/water-energy-bar.png');
 
+
+    //UI
+    this.addSpriteSheet('circles', 'assets/img/drag-ui/circles.png', 462 / 3, 105);
+    this.addImage('lineInBetween', 'assets/img/drag-ui/drag-line-between-circles.png');
 
     //Characters In game
     this.addJSON('stats', 'assets/data/stats.json');

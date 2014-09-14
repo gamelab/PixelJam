@@ -18,8 +18,10 @@ PixelJam.BulletManager.prototype = {
 	
 	spawnBullet: function(characterFiring, characterTarget) {
 
-		var x = characterFiring.currentPoint.x;
-		var y = characterFiring.currentPoint.y + characterFiring.box.hitbox.height * 0.5;
+		var hb = characterFiring.box.worldHitbox;
+
+		var x = hb.x + hb.width * 0.5;
+		var y = hb.y + hb.height * 0.5;
 
 		var bullet = new PixelJam.AutoBullet(this, characterFiring.type, characterFiring.stats, characterTarget, x, y);
 		this.bulletGroup.addChild(bullet);

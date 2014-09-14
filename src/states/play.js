@@ -57,61 +57,65 @@ PixelJam.Play.create = function () {
  	this.add(); 
 }
 
-PixelJam.Play.pointerOverlapCharacter = function(player, pointer, character) {
+PixelJam.Play.pointerOverlapCharacter = function(player, pointer, character, notAssign) {
 
 	if(player == 1) {
 		var pobj = this.player1;
 		var pobj2 = this.player2;
+
 	} else if(player == 2) {
 		var pobj = this.player2;
 		var pobj2 = this.player1;
+
 	}
 
 	var point = pobj.camera.camera.transformPoint( pointer.point ); //Move this to the pointer class. Have to do it too often
 	point.y -= pobj.camera.camera.ry;
 	point.x -= pobj.camera.camera.rx;
 
-	if( pobj2.fireCharacter.box.worldHitbox.containsPoint( point ) ) {
-		character.followCharacter( pobj2.fireCharacter );
-		return;
+	if( pobj2.fireCharacter.alive && pobj2.fireCharacter.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.followCharacter( pobj2.fireCharacter );
+		return true;
 	}
 
-	if( pobj2.waterCharacter.box.worldHitbox.containsPoint( point ) ) {
-		character.followCharacter( pobj2.waterCharacter );
-		return;
+	if( pobj2.waterCharacter.alive && pobj2.waterCharacter.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.followCharacter( pobj2.waterCharacter );
+		return true;
 	}
 
-	if( pobj2.airCharacter.box.worldHitbox.containsPoint( point ) ) {
-		character.followCharacter( pobj2.airCharacter );
-		return;
+	if( pobj2.airCharacter.alive && pobj2.airCharacter.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.followCharacter( pobj2.airCharacter );
+		return true;
 	}
 
-	if( pobj2.earthCharacter.box.worldHitbox.containsPoint( point ) ) {
-		character.followCharacter( pobj2.earthCharacter );
-		return;
+	if( pobj2.earthCharacter.alive && pobj2.earthCharacter.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.followCharacter( pobj2.earthCharacter );
+		return true;
 	}
 
-	//Base?!
+	//Bases?!
 
-	if( pobj2.fireBase.box.worldHitbox.containsPoint( point ) ) {
-		character.hurtBase( pobj2.fireBase );
-		return;
+	if( pobj2.fireBase.alive && pobj2.fireBase.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.hurtBase( pobj2.fireBase );
+		return true;
 	}
 
-	if( pobj2.waterBase.box.worldHitbox.containsPoint( point ) ) {
-		character.hurtBase( pobj2.waterBase );
-		return;
+	if( pobj2.waterBase.alive && pobj2.waterBase.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.hurtBase( pobj2.waterBase );
+		return true;
 	}
 
-	if( pobj2.airBase.box.worldHitbox.containsPoint( point ) ) {
-		character.hurtBase( pobj2.airBase );
-		return;
+	if( pobj2.airBase.alive && pobj2.airBase.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.hurtBase( pobj2.airBase );
+		return true;
 	}
 
-	if( pobj2.earthBase.box.worldHitbox.containsPoint( point ) ) {
-		character.hurtBase( pobj2.earthBase );
-		return;
+	if( pobj2.earthBase.alive && pobj2.earthBase.box.worldHitbox.containsPoint( point ) ) {
+		if(!notAssign) character.hurtBase( pobj2.earthBase );
+		return true;
 	}
+
+	return false;
 
 }
 
@@ -121,6 +125,9 @@ PixelJam.Play.add = function() {
 	this.map.add(this);
 	this.player1.addBases(this);
 	this.player2.addBases(this);
+	
+	this.hud.addUnderUI(this);
+
 	this.bulletManager.add(this);
 	this.addChild(this.characterGroup);
 
@@ -139,6 +146,7 @@ PixelJam.Play.update = function() {
 	this.player1.update();
 	this.player2.update();
 
+	this.hud.update();
 
 	//Depth Sorting
 	this.characterGroup.members = this.quicksortByDepth(this.characterGroup.members);

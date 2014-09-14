@@ -24,10 +24,10 @@ PixelJam.Player = function(state, camera, player, bullet) {
 	this.camera = new PixelJam.Camera(this.state.game, camera, camMod);
 
 
-	this.fireCharacter = new PixelJam.Character(this.state, 'fire', x + 100, y + 100, this.bulletManager);
-	this.waterCharacter = new PixelJam.Character(this.state, 'water', x - 100, y + 100, this.bulletManager);
-	this.airCharacter = new PixelJam.Character(this.state, 'air', x + 100, y - 100, this.bulletManager);
-	this.earthCharacter = new PixelJam.Character(this.state, 'earth', x - 100, y - 100, this.bulletManager);
+	this.fireCharacter = new PixelJam.Character(this.state, 'fire', x + 100, y + 100, this.bulletManager, this.player);
+	this.waterCharacter = new PixelJam.Character(this.state, 'water', x - 100, y + 100, this.bulletManager, this.player);
+	this.airCharacter = new PixelJam.Character(this.state, 'air', x + 100, y - 100, this.bulletManager, this.player);
+	this.earthCharacter = new PixelJam.Character(this.state, 'earth', x - 100, y - 100, this.bulletManager, this.player);
 
 	this.fireBase = new PixelJam.Base(this.state, this.fireCharacter);
 	this.waterBase = new PixelJam.Base(this.state, this.waterCharacter);
@@ -58,15 +58,12 @@ PixelJam.Player.prototype = {
 
 		character.moveToPoint( this.camera, pointer );
 
-		//Spawn UI element!
-
 	},
 
 	released: function( pointer ) {
 
 		//Does pointer
 		if(this.fireCharacter.releasePoint( pointer.pointer.id )) {
-			//Check for overlap of an enemy character
 			this.state.pointerOverlapCharacter( this.player, pointer.pointer, this.fireCharacter );
 		}
 
@@ -86,7 +83,7 @@ PixelJam.Player.prototype = {
 
 	moveCamera: function( character, snap ) {
 		//
-		this.camera.moveTo( character.currentPoint, snap );
+		this.camera.moveTo( character.cameraPanLocation, snap );
 
 	},
 
@@ -119,7 +116,7 @@ PixelJam.Player.prototype = {
 		this.waterBase = null;
 		this.airBase = null;
 		this.earthBase = null;
-		
+
 		this.bulletManager = null;
 		this.camera = null
 	}

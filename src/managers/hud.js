@@ -34,8 +34,6 @@ PixelJam.HUD = function(state, hudCam, playerOne, playerTwo) {
 	this.playerTwoHud.fire = new PixelJam.Portrait(this.state, 'fire', this.playerTwoHud.air.x + spacing + width, spacingY, this.playerTwo.fireCharacter, callback);
 	this.playerTwoHud.earth = new PixelJam.Portrait(this.state, 'earth', this.playerTwoHud.fire.x + spacing + width, spacingY, this.playerTwo.earthCharacter, callback);
 
-
-
 	this.playerOneSelected = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.selected, 0, -9);
 	this.playerOneSelected.visible = false;	
 	this.playerTwoSelected = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.selected, 0, 0);
@@ -56,6 +54,30 @@ PixelJam.HUD = function(state, hudCam, playerOne, playerTwo) {
 	this.middle.y = -this.hudCam.transform.y + this.hudCam.height * 0.5 - this.middle.height * 0.5;
 
 
+	//Select graphics
+	this.playerOneUnderneathUI = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.circles, 0, 0);
+	this.playerTwoUnderneathUI = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.circles, 0, 0);
+
+	this.playerOneLineUI = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.lineInBetween, 0, 0);
+	this.playerTwoLineUI = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.lineInBetween, 0, 0);
+	this.playerOneLineUI.alpha = 0;
+	this.playerTwoLineUI.alpha = 0;
+
+	this.playerOneTargetUI = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.circles, 0, 0);
+	this.playerTwoTargetUI = new Kiwi.GameObjects.StaticImage(this.state, this.state.textures.circles, 0, 0);
+	this.playerOneTargetUI.alpha = 0;
+	this.playerTwoTargetUI.alpha = 0;
+
+
+	this.workingPoint1 = new Kiwi.Geom.Point(0,0);
+	this.workingPoint2 = new Kiwi.Geom.Point(0,0);
+
+
+	this.selectPlayer(this.playerOneHud.fire, 1, this.playerOne.fireCharacter);
+	this.selectPlayer(this.playerTwoHud.fire, 2, this.playerTwo.fireCharacter);
+
+
+
 	this.playerTwoHud.fire.transform.scale = -1;
 	this.playerTwoHud.water.transform.scale = -1;
 	this.playerTwoHud.earth.transform.scale = -1;
@@ -66,6 +88,19 @@ PixelJam.HUD = function(state, hudCam, playerOne, playerTwo) {
 }
 
 PixelJam.HUD.prototype = {
+
+	addUnderUI: function(parent) {
+		//Add Group
+		parent.addChild(this.playerOneUnderneathUI);
+		parent.addChild(this.playerTwoUnderneathUI);
+
+		parent.addChild(this.playerOneLineUI);
+		parent.addChild(this.playerTwoLineUI);
+
+		parent.addChild(this.playerOneTargetUI);
+		parent.addChild(this.playerTwoTargetUI);
+
+	},
 	
 	add: function(parent) {
 		//Add here
@@ -90,17 +125,81 @@ PixelJam.HUD.prototype = {
 
 	}, 
 
-	selectPlayer: function(portrait, player) {
+	selectPlayer: function(portrait, player, character) { //Pass character
 
+	//
 		if(player == 1) {
 			this.playerOneSelected.visible = true;
-			this.playerOneSelected.x = portrait.x - 5;
+			this.playerOneSelected.x = portrait.x - 5;   //Change movement lines for that player to currently selected character
+			this.playerOneSelectedChar = character;
 
 		} else {
 			this.playerTwoSelected.visible = true;
 			this.playerTwoSelected.x = portrait.x - 5;
+			this.playerTwoSelectedChar = character;
 
 		}
+	},
+
+	update: function() {
+
+		this.updateUI(this.playerOneSelectedChar, this.playerOneUnderneathUI, this.playerOneLineUI, this.playerOneTargetUI);
+		this.updateUI(this.playerTwoSelectedChar, this.playerTwoUnderneathUI, this.playerTwoLineUI, this.playerTwoTargetUI);
+	},
+
+	updateUI: function(selectedChar, uiElement, uiLine, uiTarget) {
+
+		uiElement.visible = selectedChar.visible;
+		uiElement.x = selectedChar.x + (selectedChar.width - uiElement.width) * 0.5;
+		uiElement.y = selectedChar.y + selectedChar.height - uiElement.height + 10;
+
+		//Is the character going anywhere?!
+
+
+		this.workingPoint1.setTo( uiElement.x, uiElement.y );
+		this.workingPoint2.setTo( uiTarget.x, uiTarget.y );
+
+		//Targetting a enemy/base then fade the ui in.
+		if(selectedChar.pointer) {
+			uiTarget.alpha = Math.min( 1, uiTarget.alpha + 0.025);
+
+			this.workingPoint1 = selectedChar.camera.camera.transformPoint( selectedChar.pointer.pointer.point );
+			this.workingPoint1.y -= selectedChar.camera.camera.ry + selectedChar.bounds.height * 0.75;
+			this.workingPoint1.x -= selectedChar.camera.camera.rx;
+
+			uiTarget.x = this.workingPoint1.x - uiTarget.width * 0.5;
+			uiTarget.y = this.workingPoint1.y + uiTarget.height * 0.75;
+			
+			if(this.state.pointerOverlapCharacter( selectedChar.player, selectedChar.pointer.pointer, selectedChar, true ) ) {
+				uiTarget.cellIndex = 2;
+			} else {
+				uiTarget.cellIndex = 0;
+			}
+
+		} else if(selectedChar.target) {
+			uiTarget.alpha = Math.min( 1, uiTarget.alpha + 0.025);
+			uiTarget.cellIndex = 2;
+			uiTarget.x = selectedChar.destinationPoint.x - uiTarget.width * 0.5;
+			uiTarget.y = selectedChar.destinationPoint.y + uiTarget.height * 0.75;
+
+		//If not targeting an enemy but the point is far away
+		} else if( this.workingPoint1.distanceCompare(this.workingPoint2, uiElement.width) ) {
+			uiTarget.alpha = Math.min( 1, uiTarget.alpha + 0.025);
+			uiTarget.cellIndex = 0;
+			uiTarget.x = selectedChar.destinationPoint.x - uiTarget.width * 0.5;
+			uiTarget.y = selectedChar.destinationPoint.y + uiTarget.height * 0.75;
+		
+		} else {
+			uiTarget.alpha = Math.max( 0, uiTarget.alpha - 0.025);
+			uiTarget.cellIndex = 0;
+			uiTarget.x = selectedChar.destinationPoint.x - uiTarget.width * 0.5;
+			uiTarget.y = selectedChar.destinationPoint.y + uiTarget.height * 0.75;
+
+		}
+
+		//Do we want to attach an enemy?!
+
+
 	},
 
 	addCompleteScreens: function(player) {
@@ -150,6 +249,11 @@ PixelJam.HUD.prototype = {
 		this.state = null;
 		this.playerOne = null;
 		this.playerTwoHud = null;
+
+		this.playerOneSelectedChar = null;
+		this.playerOneUnderneathUI = null;
+		this.playerTwoSelectedChar = null; 
+		this.playerTwoUnderneathUI = null;
 
 		this.playerOneGroup = null;
 		this.playerTwoGroup = null;

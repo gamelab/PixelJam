@@ -14,7 +14,9 @@ PixelJam.AutoBullet = function(bulletManager, type, stats, target, x, y) {
 
 	var texture = this.state.textures.autoAttackSprite;
 
-	Kiwi.GameObjects.Sprite.call(this, this.state, texture, 0, 0);
+	Kiwi.GameObjects.Sprite.call(this, this.state, texture, x, y);
+	this.x -= this.box.bounds.width * 0.5;
+	this.y -= 11 + 33 / 2;
 
 	switch(type) {
 		case 'fire':// name  cells  speed  [loop=false]  [play=false]  [addToAtlas=true] )
@@ -37,6 +39,7 @@ PixelJam.AutoBullet = function(bulletManager, type, stats, target, x, y) {
 	this.rotPointY = 26;
 	this.transform.scaleY = -1;
 
+	this.update();
 }
 
 Kiwi.extend( PixelJam.AutoBullet, Kiwi.GameObjects.Sprite );
@@ -58,14 +61,14 @@ PixelJam.AutoBullet.prototype.update = function() {
 		this.death();
 		return;
 	}
-
-	//Move
-	this.x = this.point.x - this.tPoint.x;
-	this.y = this.point.y - this.tPoint.y;
 	
-	if(this.x != 0 && this.y != 0) {
+	//Move
+	this.sx = this.point.x - this.tPoint.x;
+	this.sy = this.point.y - this.tPoint.y;
+	
+	if(this.sx != 0 && this.sy != 0) {
 
-		this.hypo = Math.sqrt(this.x * this.x + this.y * this.y);
+		this.hypo = Math.sqrt(this.sx * this.sx + this.sy * this.sy);
 
 		//Shoot Him if in range!!!
 		if(this.character && this.stats.autoRange > this.hypo ) {
@@ -75,15 +78,15 @@ PixelJam.AutoBullet.prototype.update = function() {
 
 		this.angle = this.point.angleTo( this.tPoint );
 
+		this.rotation = -this.angle;
+
 		this.hypo = Math.min(this.hypo, this.stats.autoAttackSpeed);
 
-		this.x = Math.cos(this.angle - Kiwi.Utils.GameMath.PI_2) * this.hypo; 
-		this.y = Math.sin(this.angle + Kiwi.Utils.GameMath.PI_2) * this.hypo;
+		this.sx = Math.cos(this.angle - Kiwi.Utils.GameMath.PI_2) * this.hypo; 
+		this.sy = Math.sin(this.angle + Kiwi.Utils.GameMath.PI_2) * this.hypo;
 
-		this.point.x += this.x;
-		this.point.y += this.y;
-
-		this.rotation = -this.angle;
+		this.point.x += this.sx;
+		this.point.y += this.sy;
 	}
 
 	//Move
@@ -97,11 +100,18 @@ PixelJam.AutoBullet.prototype.update = function() {
 
 }
 
+
 PixelJam.AutoBullet.prototype.hurtEnemy = function() {
 	var strength = this.stats.autoAttackStrength * (1 - this.target.stats.defense / 100);
 
+	//Positive modifier
 	if(this.target.stats.type == this.stats.strength) {
 		strength *= (this.stats.modifier / 100);
+	}
+
+	//Negative Mod
+	if(this.target.stats.strength == this.stats.type) {
+		strength *= (this.stats.negModifier / 100);
 	}
 
 	this.target.hurt(strength); //Add modifier

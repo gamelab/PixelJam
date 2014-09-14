@@ -1,6 +1,6 @@
 var PixelJam = PixelJam || {};
 
-PixelJam.Character = function(state, type, x, y, bulletManager) {
+PixelJam.Character = function(state, type, x, y, bulletManager, player) {
 
 	//Stats, set for each character in the 'stats' json file.
 	this.stats = {
@@ -14,6 +14,8 @@ PixelJam.Character = function(state, type, x, y, bulletManager) {
 	};
 
 	this.state = state;
+
+	this.player = player;
 
 	this.bulletManager = bulletManager;
 
@@ -54,6 +56,8 @@ PixelJam.Character = function(state, type, x, y, bulletManager) {
 	this.bounds = null;
 
 	this.destinationPoint = new Kiwi.Geom.Point(x, y);
+
+	this.cameraPanLocation = new Kiwi.Geom.Point(x, y);
 
 	this.currentTarget = null;
 
@@ -116,7 +120,12 @@ PixelJam.Character.prototype.moveToPoint = function(camera, pointer) {
 
 PixelJam.Character.prototype.releasePoint = function(id) {
 
-	if(this.pointer !== null && this.pointer.pointer.id == id) {
+	if(this.pointer !== null && this.camera !== null && this.pointer.pointer.id == id) {
+
+		this.destinationPoint = this.camera.camera.transformPoint( this.pointer.pointer.point );
+		this.destinationPoint.y -= this.camera.camera.ry + this.bounds.height * 0.75;
+		this.destinationPoint.x -= this.camera.camera.rx;
+
 		this.camera = null;
 		this.pointer = null;
 		return true;
@@ -150,11 +159,6 @@ PixelJam.Character.prototype.update = function(x,y) {
 			this.destinationPoint = this.target.currentPoint;
 		}
 
-	}  else if(this.camera !== null && this.pointer !== null) {
-		this.destinationPoint = this.camera.camera.transformPoint( this.pointer.pointer.point );
-		this.destinationPoint.y -= this.camera.camera.ry + this.bounds.height * 0.5;
-		this.destinationPoint.x -= this.camera.camera.rx;
-
 	} 
 
 	this.moveCharacter();
@@ -164,6 +168,8 @@ PixelJam.Character.prototype.update = function(x,y) {
 	//Check distance and stuff
 	this.x = Kiwi.Utils.GameMath.clamp(this.currentPoint.x - this.bounds.width * 0.5, PixelJam.Play.mapSize.x - this.bounds.width, 0);
 	this.y = Kiwi.Utils.GameMath.clamp(this.currentPoint.y, PixelJam.Play.mapSize.y - this.bounds.height, 0 );
+
+	this.cameraPanLocation.setTo( this.x + this.width * 0.5, this.y + this.height * 0.5);
 
 }
 
@@ -184,6 +190,8 @@ PixelJam.Character.prototype.moveCharacter = function() {
 				return;
 			}
 
+			//Can't move whilst being selected
+			//if(this.pointer)  return;
 
 			this.angle = this.currentPoint.angleTo( this.destinationPoint );
 
@@ -202,7 +210,6 @@ PixelJam.Character.prototype.moveCharacter = function() {
 
 			}
 
-			//
 
 
 			this.hypo = Math.min(this.hypo, this.stats.walkSpeed);
