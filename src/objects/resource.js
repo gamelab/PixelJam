@@ -4,7 +4,7 @@ PixelJam.Resource = function(state, type) {
 	
 	this.state = state;
 	this.type = type;
-	this.mana = 20;
+	this.mana = 100;
 
 	var texture = this.state.textures.resources;
 

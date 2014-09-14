@@ -44,7 +44,7 @@ PixelJam.Loading.preload = function () {
     this.addImage('continue', 'assets/img/menus/continue.png');
 
     //Map
-    this.addImage('map', 'assets/img/map.png');
+    this.addImage('map', 'assets/img/map.jpg');
     this.addSpriteSheet('bases', 'assets/img/bases.png', 900 / 6, 600 / 4);
     this.addSpriteSheet('resources', 'assets/img/resources.png', 900 / 6, 600 / 4);
 
@@ -76,7 +76,6 @@ PixelJam.Loading.preload = function () {
 
     this.addSpriteSheet('autoAttackSprite', 'assets/img/attacks/auto-attack-sprites.png', 420 / 6, 640 / 4);
     this.addSpriteSheet('teamFX', 'assets/img/black-and-white-team-pfx.png', 780 / 6, 220 / 2 );
-    
     
     this.addSpriteSheet('fireCharacter', 'assets/img/fire-character-sprite.png', 1080 / 6, 720 / 4);
     this.addSpriteSheet('waterCharacter', 'assets/img/water-character-sprite.png', 1080 / 6, 720 / 4);
